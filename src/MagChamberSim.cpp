@@ -54,7 +54,7 @@ int main() {
     charmCount = 10;
     hunter.inventory.ultimate.amount = charmCount;
     cout << "Defaulting to LGS active." << endl;
-    hunter.setup.sheild = true;
+    hunter.inventory.sheild = true;
 
     cout << endl;
 
@@ -121,11 +121,11 @@ int main() {
         }
 
         if (input == "LGS"){
-        	if (hunter.setup.sheild == true){
-        		hunter.setup.sheild = false;
+        	if (hunter.inventory.sheild == true){
+        		hunter.inventory.sheild = false;
         	}
         	else {
-        		hunter.setup.sheild = true;
+        		hunter.inventory.sheild = true;
         	}
         }
 
@@ -165,25 +165,27 @@ int main() {
         				<< " rubies/sapphires/emeralds/scales." << endl;
         		cout << "You looted " << hunter.embersGainedTotal << " embers and melted " << hunter.cheeseMeltedAtOnce << " pieces of cheese." << endl;
         		cout << "You looted " << hunter.charmsLootedTotal << " Ultimate charms!" << endl;
-        		cout << "You have " << hunter.setup.cheese.amount << " " << hunter.setup.cheese.cheeseName << " remaining." << endl;
+        		cout << "You have " << hunter.inventory.cheeseArmed.cheeseName << " " << hunter.inventory.cheeseArmed.amount << " remaining." << endl;
         		}
         }
 
         if (input == "Trap"){
 
-        	cout << hunter.setup.weapon.wName << "/" << hunter.setup.base.bName << "/" << hunter.setup.charm.charmName << "("
-        		<< hunter.setup.charmsRemaining << ")/" << hunter.setup.cheese.cheeseName << "(" << hunter.setup.cheeseRemaining << ")" << endl;
+        	cout << hunter.inventory.weaponArmed.wName << "/" << hunter.inventory.baseArmed.bName
+        			<< "/" << hunter.inventory.charmArmed.charmName << "("
+					<< hunter.inventory.charmArmed.amount << ")/" << hunter.inventory.cheeseArmed.amount
+					<< "(" << hunter.inventory.cheeseArmed.cheeseName << ")" << endl;
 
-        	if (hunter.setup.sheild == true){
+        	if (hunter.inventory.sheild == true){
         		cout << "The LGS is active." << endl;
         	}
         	else{
         		cout << "The LGS is not active." << endl;
         	}
 
-        	cout << "Power: " << hunter.setup.trapPowerTotal << endl;
-        	cout << "Luck: " << hunter.setup.trapLuck << endl;
-        	cout << "Attraction rate: " << hunter.setup.attractionRate << endl;
+        	cout << "Power: " << hunter.inventory.trapPowerTotal << endl;
+        	cout << "Luck: " << hunter.inventory.trapLuck << endl;
+        	cout << "Attraction rate: " << hunter.inventory.attractionRate << endl;
         	cout << "Hunting tier: " << hunter.inventory.cheeseArmed.tier << endl;
         }
 
@@ -463,8 +465,8 @@ bool CatchRoll(Player hunter){
     double catchRate;
     double r = ((double) rand() / (RAND_MAX));
 
-    catchRate = ((EFF * hunter.setup.trapPowerTotal) + ((3 - EFF) * (hunter.setup.trapLuck * hunter.setup.trapLuck)))
-    		/ ((EFF * hunter.setup.trapPowerTotal) + hunter.mice.attracted.mPower);
+    catchRate = ((EFF * hunter.inventory.trapPowerTotal) + ((3 - EFF) * (hunter.inventory.trapLuck * hunter.inventory.trapLuck)))
+    		/ ((EFF * hunter.inventory.trapPowerTotal) + hunter.mice.attracted.mPower);
 
     if (r <= catchRate || hunter.inventory.charmArmed.charmName == "Ultimate"){
         return true;
@@ -522,14 +524,14 @@ Player Hunt(Player hunter){
     bool isMouseCaught = false;
     bool isRedBox = false;
 
-        atrMouse = Atr(hunter.setup.attractionRate);
+        atrMouse = Atr(hunter.inventory.attractionRate);
         if (atrMouse == true){
             hunter = ChooseMouse(hunter);
             isMouseCaught = CatchRoll(hunter);
 
             if (isMouseCaught == true){
 
-            	if (hunter.setup.charm.charmName == "Ultimate"){
+            	if (hunter.inventory.charmArmed.charmName == "Ultimate"){
             		hunter.inventory.ultimate.amount -= 1;
             	}
 
@@ -559,7 +561,7 @@ Player Hunt(Player hunter){
                 hunter.goldGained += hunter.mice.attracted.gold;
                 hunter.points += hunter.mice.attracted.points;
 
-                if (hunter.setup.cheese.regularCheese == true && hunter.setup.cheeseRemaining > 1){
+                if (hunter.inventory.cheeseArmed.regularCheese == true && hunter.inventory.cheeseArmed.amount > 1){
                 	hunter.inventory.cheeseArmed.amount -= 2;
                 	hunter.meltedCheese += 1;
                 	hunter.cheeseMeltedAtOnce += 1;
@@ -594,7 +596,7 @@ Player Hunt(Player hunter){
 
             	isRedBox = RedBoxRoll();
 
-                if (hunter.setup.cheese.regularCheese == true && hunter.setup.cheeseRemaining > 1){
+                if (hunter.inventory.cheeseArmed.regularCheese == true && hunter.inventory.cheeseArmed.amount > 1){
                 	hunter.inventory.cheeseArmed.amount -= 2;
                 	hunter.meltedCheese += 1;
                 	hunter.cheeseMeltedAtOnce += 1;
@@ -604,7 +606,7 @@ Player Hunt(Player hunter){
                 }
 
                 if(isRedBox == true){
-                    redBox = RedBoxValue(hunter.gold, hunter.points, hunter.setup.cheese);
+                    redBox = RedBoxValue(hunter.gold, hunter.points, hunter.inventory.cheeseArmed);
 
                     switch (redBox.type){
                         case 1:
@@ -649,12 +651,12 @@ Player Hunt(Player hunter){
         }
         else{
 
-        	if (hunter.setup.cheese.regularCheese == true && hunter.setup.cheeseRemaining > 1){
+        	if (hunter.inventory.cheeseArmed.regularCheese == true && hunter.inventory.cheeseArmed.amount > 1){
         		hunter.inventory.cheeseArmed.amount -= 2;
         		hunter.meltedCheese += 2;
         		hunter.cheeseMeltedAtOnce += 2;
         	}
-        	else if (hunter.setup.cheese.regularCheese == false && hunter.setup.cheeseRemaining > 0){
+        	else if (hunter.inventory.cheeseArmed.regularCheese == false && hunter.inventory.cheeseArmed.amount > 0){
         		hunter.inventory.cheeseArmed.amount -= 1;
         		hunter.meltedCheese += 1;
         		hunter.cheeseMeltedAtOnce += 1;
@@ -984,25 +986,21 @@ Player SetTrap(Player hunter){
 	}
 
 
-	hunter.setup.weapon = hunter.inventory.weaponArmed;
-	hunter.setup.base = hunter.inventory.baseArmed;
-	hunter.setup.charm = hunter.inventory.charmArmed;
-	hunter.setup.cheese =  hunter.inventory.cheeseArmed;
-
-	hunter.setup.charmsRemaining = hunter.inventory.charmArmed.amount;
-	hunter.setup.cheeseRemaining = hunter.inventory.cheeseArmed.amount;
-	hunter.setup.powerBonus = (hunter.setup.weapon.wPowerBonus + hunter.setup.base.bPowerBonus + hunter.setup.charm.charmPowerBonus) / 100.0;
-	hunter.setup.trapPower = hunter.setup.weapon.wPower + hunter.setup.base.bPower + hunter.setup.charm.charmPower;
-	hunter.setup.trapPowerTotal = hunter.setup.trapPower + (hunter.setup.trapPower * hunter.setup.powerBonus);
-	if(hunter.setup.sheild == true){
-		hunter.setup.trapLuck = hunter.setup.weapon.wLuck + hunter.setup.base.bLuck + hunter.setup.charm.charmLuck + 7;
+	hunter.inventory.powerBonus = (hunter.inventory.weaponArmed.wPowerBonus + hunter.inventory.baseArmed.bPowerBonus
+			+ hunter.inventory.charmArmed.charmPowerBonus) / 100.0;
+	hunter.inventory.trapPower = hunter.inventory.weaponArmed.wPower + hunter.inventory.baseArmed.bPower + hunter.inventory.charmArmed.charmPower;
+	hunter.inventory.trapPowerTotal = hunter.inventory.trapPower + (hunter.inventory.trapPower * hunter.inventory.powerBonus);
+	if(hunter.inventory.sheild == true){
+		hunter.inventory.trapLuck = hunter.inventory.weaponArmed.wLuck + hunter.inventory.baseArmed.bLuck
+				+ hunter.inventory.charmArmed.charmLuck + 7;
 	}
 	else{
-		hunter.setup.trapLuck = hunter.setup.weapon.wLuck + hunter.setup.base.bLuck + hunter.setup.charm.charmLuck;
+		hunter.inventory.trapLuck = hunter.inventory.weaponArmed.wLuck + hunter.inventory.baseArmed.bLuck
+				+ hunter.inventory.charmArmed.charmLuck;
 	}
-	hunter.setup.attractionRateBonus = (1 - hunter.setup.cheese.cheeseAttractionRate) * (hunter.setup.weapon.wAttractionBonus
-			+ hunter.setup.base.bAttractionBonus + hunter.setup.charm.charmAttractionBonus);
-	hunter.setup.attractionRate = hunter.setup.cheese.cheeseAttractionRate + hunter.setup.attractionRateBonus;
+	hunter.inventory.attractionRateBonus = (1 - hunter.inventory.cheeseArmed.cheeseAttractionRate) * (hunter.inventory.weaponArmed.wAttractionBonus
+			+ hunter.inventory.baseArmed.bAttractionBonus + hunter.inventory.charmArmed.charmAttractionBonus);
+	hunter.inventory.attractionRate = hunter.inventory.cheeseArmed.cheeseAttractionRate + hunter.inventory.attractionRateBonus;
 
 	return hunter;
 }

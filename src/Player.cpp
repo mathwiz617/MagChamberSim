@@ -10,7 +10,6 @@
 Player::Player() {
 	inventory = Inventory::Inventory();
 	mice = MiceStats::MiceStats();
-	setup = Trap::Trap();
 	gold = 0;
 	points = 0;
 	goldProfit = 0;

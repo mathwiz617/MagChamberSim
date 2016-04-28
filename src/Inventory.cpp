@@ -41,6 +41,14 @@ Inventory::Inventory() {
 	treasureHavarti = Cheese::Cheese("Treasure Hoard Havarti", 3, 0, 1, false, false);
 	cheeseArmed = Cheese::Cheese();
 
+	//other variables defined here
+	sheild = false;
+	powerBonus = 0.0;
+	trapPower = 0;
+	trapPowerTotal = 0.0;
+	trapLuck = 0;
+	attractionRateBonus = 0;
+	attractionRate = 0;
 }
 
 Inventory::~Inventory() {

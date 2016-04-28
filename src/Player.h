@@ -9,13 +9,12 @@
 #define PLAYER_H_
 
 #include "MiceStats.h"
-#include "Trap.h"
+#include "Inventory.h"
 
 class Player {
 public:
 	Inventory inventory;
 	MiceStats mice;
-	Trap setup;
 	long long gold;
 	long long points;
 	int goldProfit;

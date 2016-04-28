@@ -42,6 +42,15 @@ public:
 	Cheese treasureHavarti;
 	Cheese cheeseArmed;
 
+	int trapPower; //total power before bonus
+	int trapLuck; //total luck, no bonuses
+	double trapPowerTotal; //total power
+	double powerBonus; //power bonus
+	double attractionRateBonus; //bonus to cheese attraction rate
+	double attractionRate; //total attraction rate
+	bool sheild; //Does your trap get +7 luck?
+
+
 	Inventory();
 	virtual ~Inventory();
 };

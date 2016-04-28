@@ -37,7 +37,6 @@ int main() {
     string cheeseName;
     string input;
     int cycles;
-    int goudaCount;
     int charmCount;
     int huntsInArea = 0;
 
@@ -47,9 +46,8 @@ int main() {
     hunter.gold = 12000000;
     cout << "Defaulting to 1 billion points for testing. " << endl;
     hunter.points = 1000000000;
-    cout << "Defaulting to 1000 Gouda for testing " << endl;
-    goudaCount = 1000;
-    hunter.inventory.gouda.amount = goudaCount;
+    cout << "Defaulting to 100000 Gouda for testing " << endl;
+    hunter.inventory.gouda.amount = 100000;
     cout << "Defaulting to 10 Ultimate charms for testing. " << endl;
     charmCount = 10;
     hunter.inventory.ultimate.amount = charmCount;
@@ -156,7 +154,7 @@ int main() {
         				hunter.embersGained = 0;
         				hunter = SetTrap(hunter);
         				i++;
-        				if(hunter.inventory.cheeseArmed.amount == 0){
+        				if(hunter.inventory.cheeseArmed.amount < 1){
         					cout << "You ran out of cheese after " << i << " hunts. Go buy or craft more!" << endl;
         				}
         		}
@@ -165,8 +163,23 @@ int main() {
         				<< " rubies/sapphires/emeralds/scales." << endl;
         		cout << "You looted " << hunter.embersGainedTotal << " embers and melted " << hunter.cheeseMeltedAtOnce << " pieces of cheese." << endl;
         		cout << "You looted " << hunter.charmsLootedTotal << " Ultimate charms!" << endl;
-        		cout << "You have " << hunter.inventory.cheeseArmed.cheeseName << " " << hunter.inventory.cheeseArmed.amount << " remaining." << endl;
+
+        		if(hunter.inventory.cheeseArmed.cheeseName == "Gouda"){
+            		cout << "You have " << hunter.inventory.gouda.amount << " " << hunter.inventory.gouda.cheeseName << " remaining." << endl;
         		}
+
+        		if(hunter.inventory.cheeseArmed.cheeseName == "FieryFondue"){
+        			cout << "You have " << hunter.inventory.fieryFondue.amount << " " << hunter.inventory.fieryFondue.cheeseName << " remaining." << endl;
+        		}
+
+        		if(hunter.inventory.cheeseArmed.cheeseName == "MoltenHavarti"){
+        			cout << "You have " << hunter.inventory.moltenHavarti.amount << " " << hunter.inventory.moltenHavarti.cheeseName << " remaining." << endl;
+        		}
+
+        		if(hunter.inventory.cheeseArmed.cheeseName == "TreasureHoardHavarti"){
+        			cout << "You have " << hunter.inventory.treasureHavarti.amount << " " << hunter.inventory.treasureHavarti.cheeseName << " remaining." << endl;
+        		}
+        	}
         }
 
         if (input == "Trap"){
@@ -305,16 +318,19 @@ Cheese ChooseCheese(string cheeseName, Player hunter){
         cout << "Cheese will be used at a rate of two per hunt." << endl;
 
     }
-    else if (cheeseName == "FieryFondue"){
+    else if (cheeseName == "FF"){
         cheese = hunter.inventory.fieryFondue;
+        cout << "Fiery Fondue armed." << endl;
         cout << "Tier one mice will be attracted." << endl;
     }
-    else if (cheeseName == "MoltenHavarti"){
+    else if (cheeseName == "MH"){
         cheese = hunter.inventory.moltenHavarti;
+        cout << "Molten Havarti armed." << endl;
         cout << "Tier two mice will be attracted." << endl;
     }
-    else if (cheeseName == "TreasureHoardHavarti"){
+    else if (cheeseName == "THH"){
         cheese = hunter.inventory.treasureHavarti;
+        cout << "Treasure Hoard Havarti armed." << endl;
         cout << "Tier three mice will be attracted." << endl;
     }
     else{
@@ -563,8 +579,8 @@ Player Hunt(Player hunter){
 
             	if (hunter.inventory.cheeseArmed.cheeseName == "Gouda"){
             		hunter.inventory.gouda.amount -= 2;
-            		hunter.meltedCheese += 2;
-            		hunter.cheeseMeltedAtOnce +=2;
+            		hunter.meltedCheese += 1;
+            		hunter.cheeseMeltedAtOnce += 1;
             	}
 
             	if (hunter.inventory.cheeseArmed.cheeseName == "FieryFondue"){
@@ -613,8 +629,8 @@ Player Hunt(Player hunter){
 
             	if (hunter.inventory.cheeseArmed.cheeseName == "Gouda"){
             		hunter.inventory.gouda.amount -= 2;
-            		hunter.meltedCheese += 2;
-            		hunter.cheeseMeltedAtOnce +=2;
+            		hunter.meltedCheese += 1;
+            		hunter.cheeseMeltedAtOnce += 1;
             	}
 
             	if (hunter.inventory.cheeseArmed.cheeseName == "FieryFondue"){
@@ -641,6 +657,21 @@ Player Hunt(Player hunter){
                     switch (redBox.type){
                         case 1:
                         	hunter.inventory.cheeseArmed.amount -= redBox.amount;
+                        	if (hunter.inventory.cheeseArmed.cheeseName == "Gouda"){
+                        		hunter.inventory.gouda.amount -= redBox.amount;
+                        	}
+
+                        	if (hunter.inventory.cheeseArmed.cheeseName == "FieryFondue"){
+                        		hunter.inventory.fieryFondue.amount -= redBox.amount;
+                        	}
+
+                        	if (hunter.inventory.cheeseArmed.cheeseName == "MoltenHavarti"){
+                        		hunter.inventory.moltenHavarti.amount -= redBox.amount;
+                        	}
+
+                        	if (hunter.inventory.cheeseArmed.cheeseName == "TreasureHoardHavarti"){
+                        		hunter.inventory.treasureHavarti.amount -= redBox.amount;
+                        	}
                             break;
 
                         case 2:
@@ -684,7 +715,7 @@ Player Hunt(Player hunter){
         	if (hunter.inventory.cheeseArmed.cheeseName == "Gouda"){
         		hunter.inventory.gouda.amount -= 2;
         		hunter.meltedCheese += 2;
-        		hunter.cheeseMeltedAtOnce +=2;
+        		hunter.cheeseMeltedAtOnce += 2;
         	}
 
         	if (hunter.inventory.cheeseArmed.cheeseName == "FieryFondue"){
@@ -709,7 +740,23 @@ Player Hunt(Player hunter){
         	cout << endl << "No attraction!" << endl;
         }
 
-        if (hunter.inventory.cheeseArmed.amount < 0){
+        if ((hunter.inventory.cheeseArmed.cheeseName == "Gouda") && (hunter.inventory.cheeseArmed.amount < 0)){
+        	hunter.inventory.gouda.amount = 0;
+        	hunter.inventory.cheeseArmed.amount = 0;
+        }
+
+        if ((hunter.inventory.cheeseArmed.cheeseName == "FieryFondue") && (hunter.inventory.cheeseArmed.amount < 0)){
+        	hunter.inventory.fieryFondue.amount = 0;
+        	hunter.inventory.cheeseArmed.amount = 0;
+        }
+
+        if ((hunter.inventory.cheeseArmed.cheeseName == "MoltenHavarti") && (hunter.inventory.cheeseArmed.amount < 0)){
+        	hunter.inventory.moltenHavarti.amount = 0;
+        	hunter.inventory.cheeseArmed.amount = 0;
+        }
+
+        if ((hunter.inventory.cheeseArmed.cheeseName == "TreasureHoardHavarti") && (hunter.inventory.cheeseArmed.amount < 0)){
+        	hunter.inventory.treasureHavarti.amount = 0;
         	hunter.inventory.cheeseArmed.amount = 0;
         }
 
@@ -1030,15 +1077,15 @@ Player SetTrap(Player hunter){
 		cheese = hunter.inventory.gouda;
 	}
 
-	if (hunter.inventory.cheeseArmed.cheeseName == "FieryFondue"){
+	if (hunter.inventory.cheeseArmed.cheeseName == "Fiery Fondue"){
 		cheese = hunter.inventory.fieryFondue;
 	}
 
-	if (hunter.inventory.cheeseArmed.cheeseName == "MoltenHavarti"){
+	if (hunter.inventory.cheeseArmed.cheeseName == "Molten Havarti"){
 		cheese = hunter.inventory.moltenHavarti;
 	}
 
-	if (hunter.inventory.cheeseArmed.cheeseName == "TreasureHoardHavarti"){
+	if (hunter.inventory.cheeseArmed.cheeseName == "Treasure Hoard Havarti"){
 		cheese = hunter.inventory.treasureHavarti;
 	}
 

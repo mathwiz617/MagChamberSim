@@ -20,7 +20,6 @@ Player ChooseMouse(Player);
 RedBox RedBoxValue(Player);
 Player Shop(Player);
 Player Craft(Player);
-//Player SetCheese(Player, string);
 Player SetTrap(Player);
 Player LootAdd(Player);
 Player Hunt(Player);
@@ -720,30 +719,44 @@ Player Hunt(Player hunter){
 //self-described
 void SeeMiceStats(Player hunter, int hunts){
 
-	double rate;
+	double rate = 0.0;
 
     cout << "Total hunts: " << hunts << endl;
 
-    rate = hunter.mice.heated.caught / (hunter.mice.heated.caught + hunter.mice.heated.missed);
-    cout << "Superheated: " << hunter.mice.heated.caught << "/" << hunter.mice.heated.missed << " " << rate << endl;
+    if((hunter.mice.heated.caught + hunter.mice.heated.missed) != 0){
+    	rate = double(hunter.mice.heated.caught) / (hunter.mice.heated.caught + hunter.mice.heated.missed);
+    	cout << "Superheated: " << hunter.mice.heated.caught << "/" << hunter.mice.heated.missed << " " << (rate * 100) << "%" << endl;
+    }
 
-    rate = hunter.mice.magma.caught / (hunter.mice.magma.caught + hunter.mice.magma.missed);
-    cout << "Magma: " << hunter.mice.magma.caught << "/" << hunter.mice.magma.missed << " " << rate << endl;
+    if((hunter.mice.magma.caught + hunter.mice.magma.missed) != 0){
+        rate = double(hunter.mice.magma.caught) / (hunter.mice.magma.caught + hunter.mice.magma.missed);
+        cout << "Magma: " << hunter.mice.magma.caught << "/" << hunter.mice.magma.missed << " " << (rate * 100) << "%" << endl;
+    }
 
-    rate = hunter.mice.gDragon.caught / (hunter.mice.gDragon.caught + hunter.mice.gDragon.missed);
-    cout << "Green Dragon: " << hunter.mice.gDragon.caught << "/" << hunter.mice.gDragon.missed << " " << rate << endl;
+    if((hunter.mice.gDragon.caught + hunter.mice.gDragon.missed) != 0){
+        rate = double(hunter.mice.gDragon.caught) / (hunter.mice.gDragon.caught + hunter.mice.gDragon.missed);
+        cout << "Green Dragon: " << hunter.mice.gDragon.caught << "/" << hunter.mice.gDragon.missed << " " << (rate * 100) << "%" << endl;
+    }
 
-    rate = hunter.mice.rDragon.caught / (hunter.mice.rDragon.caught + hunter.mice.rDragon.missed);
-    cout << "Red Dragon: " << hunter.mice.rDragon.caught << "/" << hunter.mice.rDragon.missed << " " << rate << endl;
+    if((hunter.mice.rDragon.caught + hunter.mice.rDragon.missed) != 0){
+        rate = double(hunter.mice.rDragon.caught) / (hunter.mice.rDragon.caught + hunter.mice.rDragon.missed);
+        cout << "Red Dragon: " << hunter.mice.rDragon.caught << "/" << hunter.mice.rDragon.missed << " " << (rate * 100) << "%" << endl;
+    }
 
-    rate = hunter.mice.bDragon.caught / (hunter.mice.bDragon.caught + hunter.mice.bDragon.missed);
-    cout << "Blue Dragon: " << hunter.mice.bDragon.caught << "/" << hunter.mice.bDragon.missed << " " << rate << endl;
+    if((hunter.mice.bDragon.caught + hunter.mice.bDragon.missed) != 0){
+        rate = double(hunter.mice.bDragon.caught) / (hunter.mice.bDragon.caught + hunter.mice.bDragon.missed);
+        cout << "Blue Dragon: " << hunter.mice.bDragon.caught << "/" << hunter.mice.bDragon.missed << " " << (rate * 100) << "%" << endl;
+    }
 
-    rate = hunter.mice.blkDragon.caught / (hunter.mice.blkDragon.caught + hunter.mice.blkDragon.missed);
-    cout << "Black Dragon: " << hunter.mice.blkDragon.caught << "/" << hunter.mice.blkDragon.missed << " " << rate << endl;
+    if((hunter.mice.blkDragon.caught + hunter.mice.blkDragon.missed) != 0){
+        rate = double(hunter.mice.blkDragon.caught) / (hunter.mice.blkDragon.caught + hunter.mice.blkDragon.missed);
+        cout << "Black Dragon: " << hunter.mice.blkDragon.caught << "/" << hunter.mice.blkDragon.missed << " " << (rate * 100) << "%" << endl;
+    }
 
-    rate = hunter.mice.mother.caught / (hunter.mice.mother.caught + hunter.mice.mother.missed);
-    cout << "Broodmother: " << hunter.mice.mother.caught << "/" << hunter.mice.mother.missed << " " << rate << endl;
+    if((hunter.mice.mother.caught + hunter.mice.mother.missed) != 0){
+        rate = double(hunter.mice.mother.caught) / (hunter.mice.mother.caught + hunter.mice.mother.missed);
+        cout << "Broodmother: " << hunter.mice.mother.caught << "/" << hunter.mice.mother.missed << " " << (rate * 100) << "%" << endl;
+    }
 
     return;
 }
@@ -1064,16 +1077,6 @@ Player SetTrap(Player hunter){
 
 	return hunter;
 }
-
-/*
-Player SetCheese(Player hunter, string cheeseType){
-
-	if (cheeseType =="Gouda"){
-
-	}
-
-	return hunter;
-}*/
 
 //self-described
 void SeeInventory(Player hunter){

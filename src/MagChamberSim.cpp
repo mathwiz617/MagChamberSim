@@ -48,7 +48,7 @@ int main() {
     cout << "Defaulting to 1000 Gouda for testing " << endl;
     goudaCount = 1000;
     hunter.inventory.gouda.amount = goudaCount;
-    cout << "Defaulting to Ultimate charms for testing. " << endl;
+    cout << "Defaulting to 10 Ultimate charms for testing. " << endl;
     charmCount = 10;
     hunter.inventory.ultimate.amount = charmCount;
     cout << "Defaulting to LGS active." << endl;

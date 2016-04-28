@@ -34,15 +34,15 @@ Inventory::Inventory() {
 
 	//define cheeses
 	//("Name", bait tier, owned, attraction, store-bought, regular)
-	otherCheese = Cheese::Cheese("NYI", 0, 0, 0, false, false);
-	gouda = Cheese::Cheese("Gouda", 1, 0, .85, true, true);
-	fieryFondue = Cheese::Cheese("Fiery Fondue", 1, 0, .9, false, false);
-	moltenHavarti = Cheese::Cheese("Molten Havarti", 2, 0, .99, true, false);
-	treasureHavarti = Cheese::Cheese("Treasure Hoard Havarti", 3, 0, 1, false, false);
+	otherCheese = Cheese::Cheese("NYI", 0, 0, 0, false);
+	gouda = Cheese::Cheese("Gouda", 1, 0, .85, true);
+	fieryFondue = Cheese::Cheese("Fiery Fondue", 1, 0, .9, false);
+	moltenHavarti = Cheese::Cheese("Molten Havarti", 2, 0, .99, true);
+	treasureHavarti = Cheese::Cheese("Treasure Hoard Havarti", 3, 0, 1, false);
 	cheeseArmed = Cheese::Cheese();
 
 	//other variables defined here
-	sheild = false;
+	shield = false;
 	powerBonus = 0.0;
 	trapPower = 0;
 	trapPowerTotal = 0.0;

@@ -17,9 +17,10 @@ Base ChooseBase(string, Player);
 Charm ChooseCharm(string, Player);
 Cheese ChooseCheese(string, Player);
 Player ChooseMouse(Player);
-RedBox RedBoxValue(int, int, Cheese);
+RedBox RedBoxValue(Player);
 Player Shop(Player);
 Player Craft(Player);
+//Player SetCheese(Player, string);
 Player SetTrap(Player);
 Player LootAdd(Player);
 Player Hunt(Player);
@@ -54,7 +55,7 @@ int main() {
     charmCount = 10;
     hunter.inventory.ultimate.amount = charmCount;
     cout << "Defaulting to LGS active." << endl;
-    hunter.inventory.sheild = true;
+    hunter.inventory.shield = true;
 
     cout << endl;
 
@@ -121,11 +122,11 @@ int main() {
         }
 
         if (input == "LGS"){
-        	if (hunter.inventory.sheild == true){
-        		hunter.inventory.sheild = false;
+        	if (hunter.inventory.shield == true){
+        		hunter.inventory.shield = false;
         	}
         	else {
-        		hunter.inventory.sheild = true;
+        		hunter.inventory.shield = true;
         	}
         }
 
@@ -173,10 +174,10 @@ int main() {
 
         	cout << hunter.inventory.weaponArmed.wName << "/" << hunter.inventory.baseArmed.bName
         			<< "/" << hunter.inventory.charmArmed.charmName << "("
-					<< hunter.inventory.charmArmed.amount << ")/" << hunter.inventory.cheeseArmed.amount
-					<< "(" << hunter.inventory.cheeseArmed.cheeseName << ")" << endl;
+					<< hunter.inventory.charmArmed.amount << ")/" << hunter.inventory.cheeseArmed.cheeseName
+					<< "(" << hunter.inventory.cheeseArmed.amount << ")" << endl;
 
-        	if (hunter.inventory.sheild == true){
+        	if (hunter.inventory.shield == true){
         		cout << "The LGS is active." << endl;
         	}
         	else{
@@ -490,27 +491,27 @@ bool RedBoxRoll(){
 }
 
 //how much, of what, does the red box take away?
-RedBox RedBoxValue(int gold, int points, Cheese armed){
+RedBox RedBoxValue(Player hunter){
     RedBox value;
     double r = ((double) rand() / (RAND_MAX));
 
-    if (r <= .4 && armed.storeCheese == true){
+    if (r <= .4 && hunter.inventory.cheeseArmed.storeCheese == true){
         value.type = 1; //extra cheese
-        if (armed.regularCheese == true){
+        if (hunter.inventory.cheeseArmed.cheeseName == "Gouda"){
             value.amount = 10;
         }
         else{
             value.amount = 1;
         }
-        if (armed.amount < 0){
-            armed.amount = 0;
+        if (hunter.inventory.cheeseArmed.amount < 0){
+        	hunter.inventory.cheeseArmed.amount = 0;
         }
     }
     else if (r > .4 && r <= .7){
         value.type = 2; //drains points
         value.amount = 10000;
     }
-    else if (r > .7 && gold >= 1000){
+    else if (r > .7 && hunter.gold > 999){
         value.type = 3; //drains gold
         value.amount = 1000;
     }
@@ -561,14 +562,29 @@ Player Hunt(Player hunter){
                 hunter.goldGained += hunter.mice.attracted.gold;
                 hunter.points += hunter.mice.attracted.points;
 
-                if (hunter.inventory.cheeseArmed.regularCheese == true && hunter.inventory.cheeseArmed.amount > 1){
-                	hunter.inventory.cheeseArmed.amount -= 2;
-                	hunter.meltedCheese += 1;
-                	hunter.cheeseMeltedAtOnce += 1;
-                }
-                else{
-                	hunter.inventory.cheeseArmed.amount -= 1;
-                }
+            	if (hunter.inventory.cheeseArmed.cheeseName == "Gouda"){
+            		hunter.inventory.gouda.amount -= 2;
+            		hunter.meltedCheese += 2;
+            		hunter.cheeseMeltedAtOnce +=2;
+            	}
+
+            	if (hunter.inventory.cheeseArmed.cheeseName == "FieryFondue"){
+            		hunter.inventory.fieryFondue.amount--;
+            		hunter.meltedCheese += 1;
+            		hunter.cheeseMeltedAtOnce += 1;
+            	}
+
+            	if (hunter.inventory.cheeseArmed.cheeseName == "MoltenHavarti"){
+            		hunter.inventory.moltenHavarti.amount--;
+            		hunter.meltedCheese += 1;
+            		hunter.cheeseMeltedAtOnce += 1;
+            	}
+
+            	if (hunter.inventory.cheeseArmed.cheeseName == "TreasureHoardHavarti"){
+            		hunter.inventory.treasureHavarti.amount--;
+            		hunter.meltedCheese += 1;
+            		hunter.cheeseMeltedAtOnce += 1;
+            	}
             }
             else{
 
@@ -596,17 +612,32 @@ Player Hunt(Player hunter){
 
             	isRedBox = RedBoxRoll();
 
-                if (hunter.inventory.cheeseArmed.regularCheese == true && hunter.inventory.cheeseArmed.amount > 1){
-                	hunter.inventory.cheeseArmed.amount -= 2;
-                	hunter.meltedCheese += 1;
-                	hunter.cheeseMeltedAtOnce += 1;
-                }
-                else{
-                	hunter.inventory.cheeseArmed.amount -= 1;
-                }
+            	if (hunter.inventory.cheeseArmed.cheeseName == "Gouda"){
+            		hunter.inventory.gouda.amount -= 2;
+            		hunter.meltedCheese += 2;
+            		hunter.cheeseMeltedAtOnce +=2;
+            	}
+
+            	if (hunter.inventory.cheeseArmed.cheeseName == "FieryFondue"){
+            		hunter.inventory.fieryFondue.amount--;
+            		hunter.meltedCheese += 1;
+            		hunter.cheeseMeltedAtOnce += 1;
+            	}
+
+            	if (hunter.inventory.cheeseArmed.cheeseName == "MoltenHavarti"){
+            		hunter.inventory.moltenHavarti.amount--;
+            		hunter.meltedCheese += 1;
+            		hunter.cheeseMeltedAtOnce += 1;
+            	}
+
+            	if (hunter.inventory.cheeseArmed.cheeseName == "TreasureHoardHavarti"){
+            		hunter.inventory.treasureHavarti.amount--;
+            		hunter.meltedCheese += 1;
+            		hunter.cheeseMeltedAtOnce += 1;
+            	}
 
                 if(isRedBox == true){
-                    redBox = RedBoxValue(hunter.gold, hunter.points, hunter.inventory.cheeseArmed);
+                    redBox = RedBoxValue(hunter);
 
                     switch (redBox.type){
                         case 1:
@@ -651,21 +682,30 @@ Player Hunt(Player hunter){
         }
         else{
 
-        	if (hunter.inventory.cheeseArmed.regularCheese == true && hunter.inventory.cheeseArmed.amount > 1){
-        		hunter.inventory.cheeseArmed.amount -= 2;
+        	if (hunter.inventory.cheeseArmed.cheeseName == "Gouda"){
+        		hunter.inventory.gouda.amount -= 2;
         		hunter.meltedCheese += 2;
-        		hunter.cheeseMeltedAtOnce += 2;
+        		hunter.cheeseMeltedAtOnce +=2;
         	}
-        	else if (hunter.inventory.cheeseArmed.regularCheese == false && hunter.inventory.cheeseArmed.amount > 0){
-        		hunter.inventory.cheeseArmed.amount -= 1;
+
+        	if (hunter.inventory.cheeseArmed.cheeseName == "FieryFondue"){
+        		hunter.inventory.fieryFondue.amount--;
         		hunter.meltedCheese += 1;
         		hunter.cheeseMeltedAtOnce += 1;
         	}
-            else{
-            	hunter.inventory.cheeseArmed.amount -= 1;
+
+        	if (hunter.inventory.cheeseArmed.cheeseName == "MoltenHavarti"){
+        		hunter.inventory.moltenHavarti.amount--;
         		hunter.meltedCheese += 1;
         		hunter.cheeseMeltedAtOnce += 1;
-            }
+        	}
+
+        	if (hunter.inventory.cheeseArmed.cheeseName == "TreasureHoardHavarti"){
+        		hunter.inventory.treasureHavarti.amount--;
+        		hunter.meltedCheese += 1;
+        		hunter.cheeseMeltedAtOnce += 1;
+        	}
+
 
         	cout << endl << "No attraction!" << endl;
         }
@@ -711,15 +751,16 @@ void SeeMiceStats(Player hunter, int hunts){
 //spend your gold here!
 Player Shop(Player hunter){
 	string input;
-	int goldCostPer = 0;
-	int bought = 0;
-	int totalGoldCost = 0;
-	int emberCostPer = 0;
-	int totalEmberCost = 0;
 	char correct = 'n';
 	char again = 'y';
 
 	do{
+		int goldCostPer = 0;
+		int bought = 0;
+		int totalGoldCost = 0;
+		int emberCostPer = 0;
+		int totalEmberCost = 0;
+
 		cout << endl << "You own " << hunter.embers << " embers and " << hunter.gold << " gold." << endl;
 
 		cout << "What would you like to buy?" << endl;
@@ -969,28 +1010,45 @@ Player Craft(Player hunter){
 //set the trap, called after initial setup, changing parts, and after each hunt
 Player SetTrap(Player hunter){
 
+	Cheese cheese;
+	Charm charm;
+
 	if (hunter.inventory.cheeseArmed.cheeseName == "Gouda"){
-		hunter.inventory.cheeseArmed = hunter.inventory.gouda;
+		cheese = hunter.inventory.gouda;
 	}
 
 	if (hunter.inventory.cheeseArmed.cheeseName == "FieryFondue"){
-		hunter.inventory.cheeseArmed = hunter.inventory.fieryFondue;
+		cheese = hunter.inventory.fieryFondue;
 	}
 
 	if (hunter.inventory.cheeseArmed.cheeseName == "MoltenHavarti"){
-		hunter.inventory.cheeseArmed = hunter.inventory.moltenHavarti;
+		cheese = hunter.inventory.moltenHavarti;
 	}
 
 	if (hunter.inventory.cheeseArmed.cheeseName == "TreasureHoardHavarti"){
-		hunter.inventory.cheeseArmed = hunter.inventory.treasureHavarti;
+		cheese = hunter.inventory.treasureHavarti;
 	}
 
+	hunter.inventory.cheeseArmed = cheese;
+
+	if(hunter.inventory.charmArmed.charmName == "Ultimate"){
+		charm = hunter.inventory.ultimate;
+	}
+
+	if(hunter.inventory.charmArmed.charmName == "none"){
+		charm = hunter.inventory.noCharm;
+	}
+
+	hunter.inventory.charmArmed = charm;
 
 	hunter.inventory.powerBonus = (hunter.inventory.weaponArmed.wPowerBonus + hunter.inventory.baseArmed.bPowerBonus
 			+ hunter.inventory.charmArmed.charmPowerBonus) / 100.0;
+
 	hunter.inventory.trapPower = hunter.inventory.weaponArmed.wPower + hunter.inventory.baseArmed.bPower + hunter.inventory.charmArmed.charmPower;
+
 	hunter.inventory.trapPowerTotal = hunter.inventory.trapPower + (hunter.inventory.trapPower * hunter.inventory.powerBonus);
-	if(hunter.inventory.sheild == true){
+
+	if(hunter.inventory.shield == true){
 		hunter.inventory.trapLuck = hunter.inventory.weaponArmed.wLuck + hunter.inventory.baseArmed.bLuck
 				+ hunter.inventory.charmArmed.charmLuck + 7;
 	}
@@ -998,12 +1056,24 @@ Player SetTrap(Player hunter){
 		hunter.inventory.trapLuck = hunter.inventory.weaponArmed.wLuck + hunter.inventory.baseArmed.bLuck
 				+ hunter.inventory.charmArmed.charmLuck;
 	}
+
 	hunter.inventory.attractionRateBonus = (1 - hunter.inventory.cheeseArmed.cheeseAttractionRate) * (hunter.inventory.weaponArmed.wAttractionBonus
 			+ hunter.inventory.baseArmed.bAttractionBonus + hunter.inventory.charmArmed.charmAttractionBonus);
+
 	hunter.inventory.attractionRate = hunter.inventory.cheeseArmed.cheeseAttractionRate + hunter.inventory.attractionRateBonus;
 
 	return hunter;
 }
+
+/*
+Player SetCheese(Player hunter, string cheeseType){
+
+	if (cheeseType =="Gouda"){
+
+	}
+
+	return hunter;
+}*/
 
 //self-described
 void SeeInventory(Player hunter){

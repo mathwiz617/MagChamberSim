@@ -17,10 +17,9 @@ public:
 	int amount; //amount left
 	double cheeseAttractionRate; //base AR
 	bool storeCheese; //Can it be stolen in a red box?
-	bool regularCheese; //Will it be used at 2x rate?
 
 	Cheese();
-	Cheese(string, int, int, double, bool, bool);
+	Cheese(string, int, int, double, bool);
 	virtual ~Cheese();
 };
 

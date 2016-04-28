@@ -10,6 +10,8 @@
 #include <iostream>
 using namespace std;
 
+const int EFF = 1;
+
 Weapon ChooseWeapon(string, Player);
 Base ChooseBase(string, Player);
 Charm ChooseCharm(string, Player);
@@ -52,6 +54,7 @@ int main() {
     charmCount = 10;
     hunter.inventory.ultimate.amount = charmCount;
     cout << "Defaulting to LGS active." << endl;
+    hunter.setup.sheild = true;
 
     cout << endl;
 
@@ -133,6 +136,12 @@ int main() {
         	else{
         		cout << "How many times? ";
         		cin >> cycles;
+				hunter.rGainedTotal = 0;
+				hunter.saGainedTotal = 0;
+				hunter.eGainedTotal = 0;
+				hunter.scGainedTotal = 0;
+				hunter.charmsLootedTotal = 0;
+				hunter.embersGainedTotal = 0;
         		hunter.cheeseMeltedAtOnce = 0;
         		int i = 0;
 
@@ -161,6 +170,7 @@ int main() {
         }
 
         if (input == "Trap"){
+
         	cout << hunter.setup.weapon.wName << "/" << hunter.setup.base.bName << "/" << hunter.setup.charm.charmName << "("
         		<< hunter.setup.charmsRemaining << ")/" << hunter.setup.cheese.cheeseName << "(" << hunter.setup.cheeseRemaining << ")" << endl;
 
@@ -183,10 +193,12 @@ int main() {
 
         if (input == "Shop"){
         	hunter = Shop(hunter);
+			hunter = SetTrap(hunter);
         }
 
         if (input == "Craft"){
         	hunter = Craft(hunter);
+			hunter = SetTrap(hunter);
         }
 
         if (input == "Inventory"){
@@ -451,8 +463,8 @@ bool CatchRoll(Player hunter){
     double catchRate;
     double r = ((double) rand() / (RAND_MAX));
 
-    catchRate = (hunter.setup.trapPowerTotal + (2 * hunter.setup.trapLuck * hunter.setup.trapLuck))
-    		/ (hunter.setup.trapPowerTotal + hunter.mice.attracted.mPower);
+    catchRate = ((EFF * hunter.setup.trapPowerTotal) + ((3 - EFF) * (hunter.setup.trapLuck * hunter.setup.trapLuck)))
+    		/ ((EFF * hunter.setup.trapPowerTotal) + hunter.mice.attracted.mPower);
 
     if (r <= catchRate || hunter.inventory.charmArmed.charmName == "Ultimate"){
         return true;
@@ -921,6 +933,7 @@ Player Craft(Player hunter){
 					}
 
 					if (input == "THH"){
+						cout<< "Make sure to re-arm your cheese!" << endl;
 						hunter.inventory.treasureHavarti.amount += (crafted * 3);
 					}
 
@@ -954,10 +967,27 @@ Player Craft(Player hunter){
 //set the trap, called after initial setup, changing parts, and after each hunt
 Player SetTrap(Player hunter){
 
+	if (hunter.inventory.cheeseArmed.cheeseName == "Gouda"){
+		hunter.inventory.cheeseArmed = hunter.inventory.gouda;
+	}
+
+	if (hunter.inventory.cheeseArmed.cheeseName == "FieryFondue"){
+		hunter.inventory.cheeseArmed = hunter.inventory.fieryFondue;
+	}
+
+	if (hunter.inventory.cheeseArmed.cheeseName == "MoltenHavarti"){
+		hunter.inventory.cheeseArmed = hunter.inventory.moltenHavarti;
+	}
+
+	if (hunter.inventory.cheeseArmed.cheeseName == "TreasureHoardHavarti"){
+		hunter.inventory.cheeseArmed = hunter.inventory.treasureHavarti;
+	}
+
+
 	hunter.setup.weapon = hunter.inventory.weaponArmed;
 	hunter.setup.base = hunter.inventory.baseArmed;
 	hunter.setup.charm = hunter.inventory.charmArmed;
-	hunter.setup.cheese = hunter.inventory.cheeseArmed;
+	hunter.setup.cheese =  hunter.inventory.cheeseArmed;
 
 	hunter.setup.charmsRemaining = hunter.inventory.charmArmed.amount;
 	hunter.setup.cheeseRemaining = hunter.inventory.cheeseArmed.amount;
@@ -979,21 +1009,6 @@ Player SetTrap(Player hunter){
 
 //self-described
 void SeeInventory(Player hunter){
-
-	if(hunter.inventory.cheeseArmed.cheeseName =="Gouda"){
-		hunter.inventory.gouda.amount = hunter.inventory.cheeseArmed.amount;
-	}
-	else if(hunter.inventory.cheeseArmed.cheeseName == "Fiery Fondue"){
-		hunter.inventory.fieryFondue.amount = hunter.inventory.cheeseArmed.amount;
-	}
-	else if(hunter.inventory.cheeseArmed.cheeseName == "Molten Havarti"){
-		hunter.inventory.moltenHavarti.amount = hunter.inventory.cheeseArmed.amount;
-	}
-	else if(hunter.inventory.cheeseArmed.cheeseName == "Treasure Hoard Havarti"){
-		hunter.inventory.treasureHavarti.amount = hunter.inventory.cheeseArmed.amount;
-	}
-
-
 
 	cout << endl << "You have " << hunter.gold << " gold and " << hunter.points << " points." << endl;
 	cout << "You own " << hunter.embers << " embers, " << hunter.meltedCheese << " melted cheese." << endl;

@@ -13,9 +13,9 @@ Inventory::Inventory() {
 	//define weapons
 	//("Name", power, power bonus, luck, attraction bonus, owned)
 	iceMaiden = Weapon::Weapon("Ice Maiden", 5200, 12, 8, 0.0, true);
-	powerTrap = Weapon::Weapon("Power", 7000, 15, 0, 0.0, false);
-	luckTrap = Weapon::Weapon("Luck", 4000, 7, 30, 0.0, false);
-	bestTrap = Weapon::Weapon("Best", 8000, 20, 30, 0.0, false);
+	powerTrap = Weapon::Weapon("Power", 20000, 50, 50, 0.0, false);
+	luckTrap = Weapon::Weapon("Luck", 15000, 30, 90, 0.0, false);
+	bestTrap = Weapon::Weapon("Best", 40000, 60, 90, 0.0, false);
 	invalidWeapon = Weapon::Weapon();
 	weaponArmed = Weapon::Weapon();
 

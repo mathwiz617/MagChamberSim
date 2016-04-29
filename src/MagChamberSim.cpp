@@ -46,17 +46,13 @@ int main() {
     hunter.gold = 12000000;
     cout << "Defaulting to 1 billion points for testing. " << endl;
     hunter.points = 1000000000;
-    cout << "Defaulting to 100000 Gouda for testing " << endl;
-    hunter.inventory.gouda.amount = 100000;
+    cout << "Defaulting to 1000 Gouda. " << endl;
+    hunter.inventory.gouda.amount = 1000;
     cout << "Defaulting to 10 Ultimate charms for testing. " << endl;
     charmCount = 10;
     hunter.inventory.ultimate.amount = charmCount;
     cout << "Defaulting to LGS active." << endl;
     hunter.inventory.shield = true;
-
-    cout << "Also defaulting to 10000 Molten Havarti and 1000 Treasure Hoard Havarti for debugging purposes." << endl;
-    hunter.inventory.moltenHavarti.amount = 10000;
-    hunter.inventory.treasureHavarti.amount = 1000;
 
     cout << endl;
 
@@ -163,7 +159,8 @@ int main() {
         				}
         		}
         		cout << "You have made an overall profit of: " << hunter.goldProfit << " gold since the sim started." << endl;
-        		cout << "You looted " << hunter.rGainedTotal << "/" << hunter.saGainedTotal << "/" << hunter.rGainedTotal << "/" << hunter.scGainedTotal
+        		cout << "You looted " << hunter.rGainedTotal << "/" << hunter.saGainedTotal << "/" << hunter.rGainedTotal
+        				<< "/" << hunter.scGainedTotal
         				<< " rubies/sapphires/emeralds/scales." << endl;
         		cout << "You looted " << hunter.embersGainedTotal << " embers and melted " << hunter.cheeseMeltedAtOnce << " pieces of cheese." << endl;
         		cout << "You looted " << hunter.charmsLootedTotal << " Ultimate charms!" << endl;
@@ -439,7 +436,8 @@ Player LootAdd(Player hunter){
 		}
 	}
 
-	if((hunter.embersGained > 0) || (hunter.rGained > 0) || (hunter.saGained > 0) || (hunter.eGained > 0) || (hunter.scGained > 0) ||(hunter.charmsLooted > 0)){
+	if((hunter.embersGained > 0) || (hunter.rGained > 0) || (hunter.saGained > 0) || (hunter.eGained > 0) || (hunter.scGained > 0)
+			||(hunter.charmsLooted > 0)){
 	drops = hunter.BuildLootString(hunter.embersGained, hunter.rGained, hunter.saGained,
     		hunter.eGained, hunter.scGained, hunter.charmsLooted);
 

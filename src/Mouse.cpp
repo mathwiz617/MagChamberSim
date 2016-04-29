@@ -72,7 +72,7 @@ vector<Loot> Mouse::GetLoot(string mouse){
 	if (mouse == "Superheated"){
         lootFirstName = "Ember";
 
-        chancesFirst.push_back(.3);
+        chancesFirst.push_back(.5);
 
         maxDroppedFirst = 1;
 
@@ -88,7 +88,7 @@ vector<Loot> Mouse::GetLoot(string mouse){
 	if (mouse == "Magma"){
         lootFirstName = "Ember";
 
-        chancesFirst.push_back(.2);
+        chancesFirst.push_back(.4);
 
         maxDroppedFirst = 1;
 
@@ -179,9 +179,9 @@ vector<Loot> Mouse::GetLoot(string mouse){
 
         chancesFirst.push_back(.5);
 
-        chancesSecond.push_back(2/3);
-        chancesSecond.push_back(2/3);
-        chancesSecond.push_back(2/3);
+        chancesSecond.push_back(.66);
+        chancesSecond.push_back(.66);
+        chancesSecond.push_back(.66);
 
         maxDroppedFirst = 1;
         maxDroppedSecond = 3;

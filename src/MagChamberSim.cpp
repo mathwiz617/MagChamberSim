@@ -8,6 +8,7 @@
 #include "RedBox.h"
 #include "Player.h"
 #include <iostream>
+#include <ctime>
 using namespace std;
 
 const int EFF = 1;
@@ -39,6 +40,8 @@ int main() {
     int cycles;
     int charmCount;
     int huntsInArea = 0;
+
+    srand(time(NULL));
 
     cout << "Enter starting options." << endl << "Defaulting to 20 Dragon Embers for testing." << endl;
     hunter.embers = 20;
@@ -156,6 +159,26 @@ int main() {
         				i++;
         				if(hunter.inventory.cheeseArmed.amount < 1){
         					cout << "You ran out of cheese after " << i << " hunts. Go buy or craft more!" << endl;
+
+        			        if ((hunter.inventory.cheeseArmed.cheeseName == "Gouda") && (hunter.inventory.cheeseArmed.amount < 0)){
+        			        	hunter.inventory.gouda.amount = 0;
+        			        	hunter.inventory.cheeseArmed.amount = 0;
+        			        }
+
+        			        if ((hunter.inventory.cheeseArmed.cheeseName == "Fiery Fondue") && (hunter.inventory.cheeseArmed.amount < 0)){
+        			        	hunter.inventory.fieryFondue.amount = 0;
+        			        	hunter.inventory.cheeseArmed.amount = 0;
+        			        }
+
+        			        if ((hunter.inventory.cheeseArmed.cheeseName == "Molten Havarti") && (hunter.inventory.cheeseArmed.amount < 0)){
+        			        	hunter.inventory.moltenHavarti.amount = 0;
+        			        	hunter.inventory.cheeseArmed.amount = 0;
+        			        }
+
+        			        if ((hunter.inventory.cheeseArmed.cheeseName == "Treasure Hoard Havarti") && (hunter.inventory.cheeseArmed.amount < 0)){
+        			        	hunter.inventory.treasureHavarti.amount = 0;
+        			        	hunter.inventory.cheeseArmed.amount = 0;
+        			        }
         				}
         		}
         		cout << "You have made an overall profit of: " << hunter.goldProfit << " gold since the sim started." << endl;
@@ -389,6 +412,9 @@ Player LootAdd(Player hunter){
 	Loot loot;
 	double r = ((double) rand() / (RAND_MAX));
 
+	loot.numPossible = 0;
+
+
 	for(int i = 0; i < hunter.mice.attracted.lootPossible.size(); i++){
 		int numDropped = 0;
 		loot = hunter.mice.attracted.lootPossible.at(i);
@@ -396,6 +422,9 @@ Player LootAdd(Player hunter){
 		for (int j = 0; j < loot.numPossible; j++){
 			if (r <= loot.chance.at(j)){
 				numDropped++;
+				if(numDropped > loot.numPossible){
+					numDropped = loot.numPossible;
+				}
 			}
 
 			if ((loot.lName == "Ember") && (numDropped > 0)){
@@ -719,26 +748,6 @@ Player Hunt(Player hunter){
         	cout << endl << "No attraction!" << endl;
         }
 
-        if ((hunter.inventory.cheeseArmed.cheeseName == "Gouda") && (hunter.inventory.cheeseArmed.amount < 0)){
-        	hunter.inventory.gouda.amount = 0;
-        	hunter.inventory.cheeseArmed.amount = 0;
-        }
-
-        if ((hunter.inventory.cheeseArmed.cheeseName == "Fiery Fondue") && (hunter.inventory.cheeseArmed.amount < 0)){
-        	hunter.inventory.fieryFondue.amount = 0;
-        	hunter.inventory.cheeseArmed.amount = 0;
-        }
-
-        if ((hunter.inventory.cheeseArmed.cheeseName == "Molten Havarti") && (hunter.inventory.cheeseArmed.amount < 0)){
-        	hunter.inventory.moltenHavarti.amount = 0;
-        	hunter.inventory.cheeseArmed.amount = 0;
-        }
-
-        if ((hunter.inventory.cheeseArmed.cheeseName == "Treasure Hoard Havarti") && (hunter.inventory.cheeseArmed.amount < 0)){
-        	hunter.inventory.treasureHavarti.amount = 0;
-        	hunter.inventory.cheeseArmed.amount = 0;
-        }
-
     return hunter;
 }
 
@@ -980,7 +989,7 @@ Player Craft(Player hunter){
 				}
 			}
 			else{
-				cout << "Invalid choice! Leaving shop." << endl;
+				cout << "Invalid choice! Leaving crafting menu." << endl;
 				return hunter;
 			}
 
@@ -1004,6 +1013,7 @@ Player Craft(Player hunter){
 				if (hunter.emeralds < totalEmeraldCost || hunter.rubies < totalRubyCost || hunter.sapphires < totalSapphireCost
 						|| hunter.embers < totalEmberCost || hunter.scales < totalScaleCost || hunter.meltedCheese < meltedCheeseTotal){
 					cout << "You can't afford that!" << endl;
+
 				}
 				else{
 					if(input == "Melt"){
@@ -1015,7 +1025,6 @@ Player Craft(Player hunter){
 					}
 
 					if (input == "THH"){
-						cout<< "Make sure to re-arm your cheese!" << endl;
 						hunter.inventory.treasureHavarti.amount += (crafted * 3);
 					}
 
@@ -1026,15 +1035,15 @@ Player Craft(Player hunter){
 						hunter.inventory.luckTrap.inInventory = false;
 						hunter.inventory.bestTrap.inInventory = true;
 					}
+
+					hunter.embers -= totalEmberCost;
+					hunter.emeralds -= totalEmeraldCost;
+					hunter.rubies -= totalRubyCost;
+					hunter.sapphires -= totalSapphireCost;
+					hunter.scales -= totalScaleCost;
+					hunter.meltedCheese -= meltedCheeseTotal;
 				}
 			}
-
-			hunter.embers -= totalEmberCost;
-			hunter.emeralds -= totalEmeraldCost;
-			hunter.rubies -= totalRubyCost;
-			hunter.sapphires -= totalSapphireCost;
-			hunter.scales -= totalScaleCost;
-			hunter.meltedCheese -= meltedCheeseTotal;
 
 		}while (correct == 'n');
 

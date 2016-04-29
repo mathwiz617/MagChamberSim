@@ -112,7 +112,7 @@ int main() {
 
         if (input == "Cheese"){
             cout << "What do you want to change to?" <<endl;
-            cout <<	"(Only Gouda is available for regular cheeses. Enter full name of cheese, without whitespace.)" << endl;
+            cout <<	"(Only Gouda is available for regular cheeses. Gouda, FF, MH, or THH.)" << endl;
             cin >> cheeseName;
             hunter.inventory.cheeseArmed = ChooseCheese(cheeseName, hunter);
             hunter = SetTrap(hunter);

@@ -54,6 +54,10 @@ int main() {
     cout << "Defaulting to LGS active." << endl;
     hunter.inventory.shield = true;
 
+    cout << "Also defaulting to 10000 Molten Havarti and 1000 Treasure Hoard Havarti for debugging purposes." << endl;
+    hunter.inventory.moltenHavarti.amount = 10000;
+    hunter.inventory.treasureHavarti.amount = 1000;
+
     cout << endl;
 
     weaponName = "IceMaiden";
@@ -169,15 +173,18 @@ int main() {
         		}
 
         		if(hunter.inventory.cheeseArmed.cheeseName == "FieryFondue"){
-        			cout << "You have " << hunter.inventory.fieryFondue.amount << " " << hunter.inventory.fieryFondue.cheeseName << " remaining." << endl;
+        			cout << "You have " << hunter.inventory.fieryFondue.amount << " "
+        					<< hunter.inventory.fieryFondue.cheeseName << " remaining." << endl;
         		}
 
         		if(hunter.inventory.cheeseArmed.cheeseName == "MoltenHavarti"){
-        			cout << "You have " << hunter.inventory.moltenHavarti.amount << " " << hunter.inventory.moltenHavarti.cheeseName << " remaining." << endl;
+        			cout << "You have " << hunter.inventory.moltenHavarti.amount << " "
+        					<< hunter.inventory.moltenHavarti.cheeseName << " remaining." << endl;
         		}
 
         		if(hunter.inventory.cheeseArmed.cheeseName == "TreasureHoardHavarti"){
-        			cout << "You have " << hunter.inventory.treasureHavarti.amount << " " << hunter.inventory.treasureHavarti.cheeseName << " remaining." << endl;
+        			cout << "You have " << hunter.inventory.treasureHavarti.amount << " "
+        					<< hunter.inventory.treasureHavarti.cheeseName << " remaining." << endl;
         		}
         	}
         }
@@ -383,75 +390,53 @@ Player ChooseMouse( Player hunter){
 Player LootAdd(Player hunter){
 	string drops;
 	Loot loot;
-	int numFirstDropped = 0;
-	int numSecondDropped = 0;
-	int numThirdDropped = 0;
 	double r = ((double) rand() / (RAND_MAX));
 
 	for(int i = 0; i < hunter.mice.attracted.lootPossible.size(); i++){
+		int numDropped = 0;
 		loot = hunter.mice.attracted.lootPossible.at(i);
 
-		for (int j = 0; i < loot.numPossible; i++){
+		for (int j = 0; j < loot.numPossible; j++){
 			if (r <= loot.chance.at(j)){
-				numFirstDropped++;
+				numDropped++;
+			}
+
+			if ((loot.lName == "Ember") && (numDropped > 0)){
+				hunter.embers += numDropped;
+				hunter.embersGained += numDropped;
+				hunter.embersGainedTotal += numDropped;
+			}
+
+			if ((loot.lName == "Scale") && (numDropped > 0)){
+				hunter.scales += numDropped;
+				hunter.scGained += numDropped;
+				hunter.scGainedTotal += numDropped;
+			}
+
+			if ((loot.lName == "Sapphire") && (numDropped > 0)){
+				hunter.sapphires += numDropped;
+				hunter.saGained += numDropped;
+				hunter.saGainedTotal += numDropped;
+			}
+
+			if ((loot.lName == "Ruby") && (numDropped > 0)){
+				hunter.rubies += numDropped;
+				hunter.rGained += numDropped;
+				hunter.rGainedTotal += numDropped;
+			}
+
+			if ((loot.lName == "Emerald") && (numDropped > 0)){
+				hunter.emeralds += numDropped;
+				hunter.eGained += numDropped;
+				hunter.eGainedTotal += numDropped;
+			}
+
+			if ((loot.lName == "UC") && (numDropped > 0)){
+				hunter.inventory.ultimate.amount += numDropped;
+				hunter.charmsLooted += numDropped;
+				hunter.charmsLootedTotal += numDropped;
 			}
 		}
-
-		if ((loot.lName == "Ember") && (numFirstDropped > 0)){
-			hunter.embers += numFirstDropped;
-			hunter.embersGained += numFirstDropped;
-			hunter.embersGainedTotal += numFirstDropped;
-		}
-
-		if ((loot.lName == "Scale") && (numFirstDropped > 0)){
-			hunter.scales += numFirstDropped;
-			hunter.scGained += numFirstDropped;
-			hunter.scGainedTotal += numFirstDropped;
-
-		}
-
-		for (int j = 0; i < loot.numPossible; i++){
-			if (r <= loot.chance.at(j)){
-				numSecondDropped++;
-			}
-		}
-
-		if ((loot.lName == "Sapphire") && (numSecondDropped > 0)){
-			hunter.sapphires += numSecondDropped;
-			hunter.saGained += numSecondDropped;
-			hunter.saGainedTotal += numSecondDropped;
-		}
-
-		if ((loot.lName == "Ruby") && (numSecondDropped > 0)){
-			hunter.rubies += numSecondDropped;
-			hunter.rGained += numSecondDropped;
-			hunter.rGainedTotal += numSecondDropped;
-		}
-
-		if ((loot.lName == "Emerald") && (numSecondDropped > 0)){
-			hunter.emeralds += numSecondDropped;
-			hunter.eGained += numSecondDropped;
-			hunter.eGainedTotal += numSecondDropped;
-		}
-
-		if ((loot.lName == "Ember") && (numSecondDropped > 0)){
-			hunter.embers += numFirstDropped;
-			hunter.embersGained += numFirstDropped;
-			hunter.embersGainedTotal += numSecondDropped;
-		}
-
-		for (int j = 0; i < loot.numPossible; i++){
-			if (r <= loot.chance.at(j)){
-				numThirdDropped++;
-			}
-		}
-
-		if ((loot.lName == "UC") && (numSecondDropped > 0)){
-			hunter.inventory.ultimate.amount += numThirdDropped;
-			hunter.charmsLooted += numThirdDropped;
-			hunter.charmsLootedTotal += numThirdDropped;
-		}
-
 	}
 
 	if((hunter.embersGained > 0) || (hunter.rGained > 0) || (hunter.saGained > 0) || (hunter.eGained > 0) || (hunter.scGained > 0) ||(hunter.charmsLooted > 0)){
@@ -583,19 +568,19 @@ Player Hunt(Player hunter){
             		hunter.cheeseMeltedAtOnce += 1;
             	}
 
-            	if (hunter.inventory.cheeseArmed.cheeseName == "FieryFondue"){
+            	if (hunter.inventory.cheeseArmed.cheeseName == "Fiery Fondue"){
             		hunter.inventory.fieryFondue.amount--;
             		hunter.meltedCheese += 1;
             		hunter.cheeseMeltedAtOnce += 1;
             	}
 
-            	if (hunter.inventory.cheeseArmed.cheeseName == "MoltenHavarti"){
+            	if (hunter.inventory.cheeseArmed.cheeseName == "Molten Havarti"){
             		hunter.inventory.moltenHavarti.amount--;
             		hunter.meltedCheese += 1;
             		hunter.cheeseMeltedAtOnce += 1;
             	}
 
-            	if (hunter.inventory.cheeseArmed.cheeseName == "TreasureHoardHavarti"){
+            	if (hunter.inventory.cheeseArmed.cheeseName == "Treasure Hoard Havarti"){
             		hunter.inventory.treasureHavarti.amount--;
             		hunter.meltedCheese += 1;
             		hunter.cheeseMeltedAtOnce += 1;
@@ -633,22 +618,16 @@ Player Hunt(Player hunter){
             		hunter.cheeseMeltedAtOnce += 1;
             	}
 
-            	if (hunter.inventory.cheeseArmed.cheeseName == "FieryFondue"){
+            	if (hunter.inventory.cheeseArmed.cheeseName == "Fiery Fondue"){
             		hunter.inventory.fieryFondue.amount--;
-            		hunter.meltedCheese += 1;
-            		hunter.cheeseMeltedAtOnce += 1;
             	}
 
-            	if (hunter.inventory.cheeseArmed.cheeseName == "MoltenHavarti"){
+            	if (hunter.inventory.cheeseArmed.cheeseName == "Molten Havarti"){
             		hunter.inventory.moltenHavarti.amount--;
-            		hunter.meltedCheese += 1;
-            		hunter.cheeseMeltedAtOnce += 1;
             	}
 
-            	if (hunter.inventory.cheeseArmed.cheeseName == "TreasureHoardHavarti"){
+            	if (hunter.inventory.cheeseArmed.cheeseName == "Treasure Hoard Havarti"){
             		hunter.inventory.treasureHavarti.amount--;
-            		hunter.meltedCheese += 1;
-            		hunter.cheeseMeltedAtOnce += 1;
             	}
 
                 if(isRedBox == true){
@@ -661,15 +640,15 @@ Player Hunt(Player hunter){
                         		hunter.inventory.gouda.amount -= redBox.amount;
                         	}
 
-                        	if (hunter.inventory.cheeseArmed.cheeseName == "FieryFondue"){
+                        	if (hunter.inventory.cheeseArmed.cheeseName == "Fiery Fondue"){
                         		hunter.inventory.fieryFondue.amount -= redBox.amount;
                         	}
 
-                        	if (hunter.inventory.cheeseArmed.cheeseName == "MoltenHavarti"){
+                        	if (hunter.inventory.cheeseArmed.cheeseName == "Molten Havarti"){
                         		hunter.inventory.moltenHavarti.amount -= redBox.amount;
                         	}
 
-                        	if (hunter.inventory.cheeseArmed.cheeseName == "TreasureHoardHavarti"){
+                        	if (hunter.inventory.cheeseArmed.cheeseName == "Treasure Hoard Havarti"){
                         		hunter.inventory.treasureHavarti.amount -= redBox.amount;
                         	}
                             break;
@@ -681,6 +660,7 @@ Player Hunt(Player hunter){
                         case 3:
                             hunter.gold -= redBox.amount;
                             hunter.goldLost += redBox.amount;
+                            break;
                     }
                 }
             }
@@ -705,6 +685,7 @@ Player Hunt(Player hunter){
 
             		case 3:
             			cout << redBox.amount << " gold!" << endl;
+            			break;
             		}
             	}
             	hunter.goldProfit = hunter.goldGained - hunter.goldLost;
@@ -718,19 +699,19 @@ Player Hunt(Player hunter){
         		hunter.cheeseMeltedAtOnce += 2;
         	}
 
-        	if (hunter.inventory.cheeseArmed.cheeseName == "FieryFondue"){
+        	if (hunter.inventory.cheeseArmed.cheeseName == "Fiery Fondue"){
         		hunter.inventory.fieryFondue.amount--;
         		hunter.meltedCheese += 1;
         		hunter.cheeseMeltedAtOnce += 1;
         	}
 
-        	if (hunter.inventory.cheeseArmed.cheeseName == "MoltenHavarti"){
+        	if (hunter.inventory.cheeseArmed.cheeseName == "Molten Havarti"){
         		hunter.inventory.moltenHavarti.amount--;
         		hunter.meltedCheese += 1;
         		hunter.cheeseMeltedAtOnce += 1;
         	}
 
-        	if (hunter.inventory.cheeseArmed.cheeseName == "TreasureHoardHavarti"){
+        	if (hunter.inventory.cheeseArmed.cheeseName == "Treasure Hoard Havarti"){
         		hunter.inventory.treasureHavarti.amount--;
         		hunter.meltedCheese += 1;
         		hunter.cheeseMeltedAtOnce += 1;
@@ -745,17 +726,17 @@ Player Hunt(Player hunter){
         	hunter.inventory.cheeseArmed.amount = 0;
         }
 
-        if ((hunter.inventory.cheeseArmed.cheeseName == "FieryFondue") && (hunter.inventory.cheeseArmed.amount < 0)){
+        if ((hunter.inventory.cheeseArmed.cheeseName == "Fiery Fondue") && (hunter.inventory.cheeseArmed.amount < 0)){
         	hunter.inventory.fieryFondue.amount = 0;
         	hunter.inventory.cheeseArmed.amount = 0;
         }
 
-        if ((hunter.inventory.cheeseArmed.cheeseName == "MoltenHavarti") && (hunter.inventory.cheeseArmed.amount < 0)){
+        if ((hunter.inventory.cheeseArmed.cheeseName == "Molten Havarti") && (hunter.inventory.cheeseArmed.amount < 0)){
         	hunter.inventory.moltenHavarti.amount = 0;
         	hunter.inventory.cheeseArmed.amount = 0;
         }
 
-        if ((hunter.inventory.cheeseArmed.cheeseName == "TreasureHoardHavarti") && (hunter.inventory.cheeseArmed.amount < 0)){
+        if ((hunter.inventory.cheeseArmed.cheeseName == "Treasure Hoard Havarti") && (hunter.inventory.cheeseArmed.amount < 0)){
         	hunter.inventory.treasureHavarti.amount = 0;
         	hunter.inventory.cheeseArmed.amount = 0;
         }

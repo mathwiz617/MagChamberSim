@@ -107,7 +107,7 @@ int main() {
         }
 
         if (input == "Charm"){
-            cout << "What do you want to change to? (NYFI, enter None or Ultimate.)" << endl;
+            cout << "What do you want to change to? (NYFI, enter None, Dragon, or Ultimate.)" << endl;
             cin >> charmName;
             hunter.inventory.charmArmed = ChooseCharm(charmName, hunter);
             hunter = SetTrap(hunter);
@@ -323,9 +323,13 @@ Charm ChooseCharm(string charmName, Player hunter){
         charm = hunter.inventory.noCharm;
         cout << "No charm armed." << endl;
     }
-    else if (charmName == "Ultimate"){
+    else if(charmName == "Ultimate"){
         charm = hunter.inventory.ultimate;
         cout << "Ultimate charm armed. Charm will be used up on each hunt." << endl << "Catch those mice!" << endl;
+    }
+    else if(charmName == "Dragon"){
+    	charm = hunter.inventory.dragon;
+    	cout << "Dragon charm armed. Charm will be used up on each hunt." << endl;
     }
     else{
         charm = hunter.inventory.otherCharm;
@@ -416,10 +420,10 @@ Player LootAdd(Player hunter){
 
 
 	for(int i = 0; i < hunter.mice.attracted.lootPossible.size(); i++){
-		int numDropped = 0;
 		loot = hunter.mice.attracted.lootPossible.at(i);
 
 		for (int j = 0; j < loot.numPossible; j++){
+			int numDropped = 0;
 			if (r <= loot.chance.at(j)){
 				numDropped++;
 				if(numDropped > loot.numPossible){
@@ -946,6 +950,7 @@ Player Craft(Player hunter){
 	cout << "Melt = Craft melted cheese, one ember per piece." << endl;
 	cout << "FF = Craft Fiery Fondue. Spend 1 ember, 10 melted cheese for pack of ten pieces." << endl;
 	cout << "THH = Craft Treasure Hoard Havarti. Spend 10 embers, 3 Sapphires, 3 Rubies, 3 Emeralds, 30 Melted cheese produces three." << endl;
+	cout << "Charm = Craft Dragon Charm. Spend 10 embers, 10 scales each." << endl;
 	cout << "Trap = Best trap. Spend 1000 embers, 50 scales, both Power and Luck traps. Max of one." << endl;
 	cout << "None = stop crafting." << endl;
 
@@ -972,6 +977,10 @@ Player Craft(Player hunter){
 				sapphiresSpentPer = 3;
 				emeraldsSpentPer = 3;
 				emberCostPer = 10;
+			}
+			else if(input == "Charm"){
+				emberCostPer = 10;
+				totalScaleCost = 10;
 			}
 			else if(input == "Trap"){
 				if (hunter.inventory.bestTrap.inInventory){
@@ -1013,7 +1022,6 @@ Player Craft(Player hunter){
 				if (hunter.emeralds < totalEmeraldCost || hunter.rubies < totalRubyCost || hunter.sapphires < totalSapphireCost
 						|| hunter.embers < totalEmberCost || hunter.scales < totalScaleCost || hunter.meltedCheese < meltedCheeseTotal){
 					cout << "You can't afford that!" << endl;
-
 				}
 				else{
 					if(input == "Melt"){
@@ -1083,6 +1091,10 @@ Player SetTrap(Player hunter){
 		charm = hunter.inventory.ultimate;
 	}
 
+	if(hunter.inventory.charmArmed.charmName == "Dragon"){
+		charm = hunter.inventory.dragon;
+	}
+
 	if(hunter.inventory.charmArmed.charmName == "none"){
 		charm = hunter.inventory.noCharm;
 	}
@@ -1118,8 +1130,8 @@ void SeeInventory(Player hunter){
 
 	cout << endl << "You have " << hunter.gold << " gold and " << hunter.points << " points." << endl;
 	cout << "You own " << hunter.embers << " embers, " << hunter.meltedCheese << " melted cheese." << endl;
-	cout << "You own " << hunter.sapphires << "/" << hunter.rubies << "/" << hunter.emeralds  << "/" << hunter.scales
-			<< " sapphires/rubies/emeralds/scales." << endl;
+	cout << "You own " << hunter.rubies << "/" << hunter.sapphires << "/" << hunter.emeralds  << "/" << hunter.scales
+			<< " rubies/sapphires/emeralds/scales." << endl;
 
 	if(hunter.inventory.iceMaiden.inInventory == true){
 		cout << "You own the Ice Maiden." << endl;
@@ -1139,6 +1151,7 @@ void SeeInventory(Player hunter){
 	}
 
 	cout << "You own " << hunter.inventory.ultimate.amount << " Ultimate Charms." << endl;
+	cout << "You own " << hunter.inventory.dragon.amount << "Dragon Charms." << endl;
 
 	cout << "You own " << hunter.inventory.gouda.amount << " gouda." << endl;
 	cout << "You own " << hunter.inventory.fieryFondue.amount << " Fiery Fondue." << endl;

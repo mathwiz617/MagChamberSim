@@ -29,6 +29,7 @@ Inventory::Inventory() {
 	//("Name", power, power bonus, luck, number owned, attraction bonus)
 	otherCharm = Charm::Charm("NYI", 0, 0, 0, 0, 0.0);
 	ultimate = Charm::Charm("Ultimate", 0, 0, 0, 0, 0.0);
+	dragon = Charm::Charm("Dragon", 10000, 40, 30, 0, 0.0);
 	noCharm = Charm::Charm();
 	charmArmed = noCharm;
 

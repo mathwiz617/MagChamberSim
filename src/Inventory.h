@@ -32,6 +32,7 @@ public:
 	Charm otherCharm;
 	Charm noCharm;
 	Charm ultimate;
+	Charm dragon;
 	Charm charmArmed;
 
 	//declare cheeses

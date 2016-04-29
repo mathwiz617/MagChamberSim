@@ -17,7 +17,7 @@ MiceStats::MiceStats() {
 	rDragon = Mouse::Mouse("Red Dragon", 80000, 2, 100000, 30000, .3);
 	bDragon = Mouse::Mouse("Blue Dragon", 80000, 2, 30000, 100000, .3);
 	blkDragon = Mouse::Mouse("Black Dragon", 150000, 2, 100000, 100000, .1);
-	mother = Mouse::Mouse("Broodmother", 800000, 3, 1000000, 1000000, 1);
+	mother = Mouse::Mouse("Broodmother", 800000, 3, 500000, 500000, 1);
 	attracted = Mouse::Mouse();
 }
 

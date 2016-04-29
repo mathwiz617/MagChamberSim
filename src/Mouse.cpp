@@ -105,7 +105,7 @@ vector<Loot> Mouse::GetLoot(string mouse){
         lootFirstName = "Scale";
         lootSecondName = "Emerald";
 
-        chancesFirst.push_back(.2);
+        chancesFirst.push_back(.1);
 
         chancesSecond.push_back(1);
 
@@ -129,7 +129,7 @@ vector<Loot> Mouse::GetLoot(string mouse){
         lootFirstName = "Scale";
         lootSecondName = "Sapphire";
 
-        chancesFirst.push_back(.2);
+        chancesFirst.push_back(.1);
 
         chancesSecond.push_back(1);
 
@@ -153,7 +153,7 @@ vector<Loot> Mouse::GetLoot(string mouse){
         lootFirstName = "Scale";
         lootSecondName = "Ruby";
 
-        chancesFirst.push_back(.2);
+        chancesFirst.push_back(.1);
 
         chancesSecond.push_back(1);
 
@@ -177,7 +177,7 @@ vector<Loot> Mouse::GetLoot(string mouse){
 		lootFirstName = "Scale";
 		lootSecondName = "Ember";
 
-        chancesFirst.push_back(.5);
+        chancesFirst.push_back(.25);
 
         chancesSecond.push_back(.66);
         chancesSecond.push_back(.66);

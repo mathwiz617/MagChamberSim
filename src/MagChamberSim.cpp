@@ -137,6 +137,7 @@ int main() {
         	else{
         		cout << "How many times? ";
         		cin >> cycles;
+        		hunter.goldProfit = 0;
 				hunter.rGainedTotal = 0;
 				hunter.saGainedTotal = 0;
 				hunter.eGainedTotal = 0;
@@ -181,7 +182,7 @@ int main() {
         			        }
         				}
         		}
-        		cout << "You have made an overall profit of: " << hunter.goldProfit << " gold since the sim started." << endl;
+        		cout << "You have made an overall profit of: " << hunter.goldProfit << " gold this last round of hunting." << endl;
         		cout << "You looted " << hunter.rGainedTotal << "/" << hunter.saGainedTotal << "/" << hunter.rGainedTotal
         				<< "/" << hunter.scGainedTotal
         				<< " rubies/sapphires/emeralds/scales." << endl;
@@ -323,11 +324,11 @@ Charm ChooseCharm(string charmName, Player hunter){
         charm = hunter.inventory.noCharm;
         cout << "No charm armed." << endl;
     }
-    else if(charmName == "Ultimate"){
+    else if((charmName == "Ultimate") && (hunter.inventory.ultimate.amount > 0)){
         charm = hunter.inventory.ultimate;
         cout << "Ultimate charm armed. Charm will be used up on each hunt." << endl << "Catch those mice!" << endl;
     }
-    else if(charmName == "Dragon"){
+    else if((charmName == "Dragon") && (hunter.inventory.dragon.amount > 0)){
     	charm = hunter.inventory.dragon;
     	cout << "Dragon charm armed. Charm will be used up on each hunt." << endl;
     }
@@ -342,24 +343,24 @@ Charm ChooseCharm(string charmName, Player hunter){
 Cheese ChooseCheese(string cheeseName, Player hunter){
     Cheese cheese = Cheese::Cheese();
 
-    if(cheeseName == "Gouda"){
+    if((cheeseName == "Gouda") && (hunter.inventory.gouda.amount > 0)){
         cheese = hunter.inventory.gouda;
         cout << "Gouda armed." << endl;
         cout << "Tier one mice will be attracted." << endl;
         cout << "Cheese will be used at a rate of two per hunt." << endl;
 
     }
-    else if (cheeseName == "FF"){
+    else if ((cheeseName == "FF") &&  (hunter.inventory.fieryFondue.amount > 0)){
         cheese = hunter.inventory.fieryFondue;
         cout << "Fiery Fondue armed." << endl;
         cout << "Tier one mice will be attracted." << endl;
     }
-    else if (cheeseName == "MH"){
+    else if ((cheeseName == "MH") &&  (hunter.inventory.moltenHavarti.amount > 0)){
         cheese = hunter.inventory.moltenHavarti;
         cout << "Molten Havarti armed." << endl;
         cout << "Tier two mice will be attracted." << endl;
     }
-    else if (cheeseName == "THH"){
+    else if ((cheeseName == "THH") &&  (hunter.inventory.treasureHavarti.amount > 0)){
         cheese = hunter.inventory.treasureHavarti;
         cout << "Treasure Hoard Havarti armed." << endl;
         cout << "Tier three mice will be attracted." << endl;
@@ -595,26 +596,18 @@ Player Hunt(Player hunter){
 
             	if (hunter.inventory.cheeseArmed.cheeseName == "Gouda"){
             		hunter.inventory.gouda.amount -= 2;
-            		hunter.meltedCheese += 1;
-            		hunter.cheeseMeltedAtOnce += 1;
             	}
 
             	if (hunter.inventory.cheeseArmed.cheeseName == "Fiery Fondue"){
             		hunter.inventory.fieryFondue.amount--;
-            		hunter.meltedCheese += 1;
-            		hunter.cheeseMeltedAtOnce += 1;
             	}
 
             	if (hunter.inventory.cheeseArmed.cheeseName == "Molten Havarti"){
             		hunter.inventory.moltenHavarti.amount--;
-            		hunter.meltedCheese += 1;
-            		hunter.cheeseMeltedAtOnce += 1;
             	}
 
             	if (hunter.inventory.cheeseArmed.cheeseName == "Treasure Hoard Havarti"){
             		hunter.inventory.treasureHavarti.amount--;
-            		hunter.meltedCheese += 1;
-            		hunter.cheeseMeltedAtOnce += 1;
             	}
             }
             else{
@@ -817,7 +810,7 @@ Player Shop(Player hunter){
 
 		cout << "What would you like to buy?" << endl;
 		cout << "Gouda = buy gouda, 600 gold per piece." << endl;
-		cout << "MH = buy Molten Havarti. Spend 1 ember, 5,000 gold for pack of ten pieces." << endl;
+		cout << "MH = buy Molten Havarti. Spend 1 ember, 5,000 gold for pack of five pieces." << endl;
 		cout << "Power = Power-based trap. Spend 100 embers, 5 million gold. Max of one." << endl;
 		cout << "Luck = Luck-based trap. Spend 100 embers, 5 million gold. Max of one." << endl;
 		cout << "None = leave shop." << endl;
@@ -895,7 +888,7 @@ Player Shop(Player hunter){
 					}
 
 					if (input == "MH"){
-						hunter.inventory.moltenHavarti.amount += (bought * 10);
+						hunter.inventory.moltenHavarti.amount += (bought * 5);
 					}
 
 					if (input == "Power" && bought == 1){
@@ -909,6 +902,7 @@ Player Shop(Player hunter){
 					}
 
 					hunter.gold -= totalGoldCost;
+					hunter.goldLost += totalGoldCost;
 					hunter.embers -= totalEmberCost;
 				}
 			}
@@ -989,6 +983,7 @@ Player Craft(Player hunter){
 				}
 				else if (crafted == 1){
 					emberCostPer = 1000;
+					scalesSpentPer = 50;
 				}
 				else{
 					cout << "You can only craft one of those!" << endl;
@@ -1151,7 +1146,7 @@ void SeeInventory(Player hunter){
 	}
 
 	cout << "You own " << hunter.inventory.ultimate.amount << " Ultimate Charms." << endl;
-	cout << "You own " << hunter.inventory.dragon.amount << "Dragon Charms." << endl;
+	cout << "You own " << hunter.inventory.dragon.amount << " Dragon Charms." << endl;
 
 	cout << "You own " << hunter.inventory.gouda.amount << " gouda." << endl;
 	cout << "You own " << hunter.inventory.fieryFondue.amount << " Fiery Fondue." << endl;

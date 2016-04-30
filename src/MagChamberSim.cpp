@@ -45,14 +45,14 @@ int main() {
 
     cout << "Enter starting options." << endl << "Defaulting to 20 Dragon Embers for testing." << endl;
     hunter.embers = 20;
-    cout << "Defaulting to 12 million gold for testing. " << endl;
+    cout << "Defaulting to 12 million gold. " << endl;
     hunter.gold = 12000000;
-    cout << "Defaulting to 1 billion points for testing. " << endl;
+    cout << "Defaulting to 1 billion points. " << endl;
     hunter.points = 1000000000;
     cout << "Defaulting to 1000 Gouda. " << endl;
     hunter.inventory.gouda.amount = 1000;
-    cout << "Defaulting to 10 Ultimate charms for testing. " << endl;
-    charmCount = 10;
+    cout << "Defaulting to 6 Ultimate charms. " << endl;
+    charmCount = 6;
     hunter.inventory.ultimate.amount = charmCount;
     cout << "Defaulting to LGS active." << endl;
     hunter.inventory.shield = true;
@@ -180,6 +180,24 @@ int main() {
         			        	hunter.inventory.treasureHavarti.amount = 0;
         			        	hunter.inventory.cheeseArmed.amount = 0;
         			        }
+        				}
+        				if(hunter.inventory.charmArmed.amount < 1){
+
+        			        if (hunter.inventory.charmArmed.charmName != "none"){
+        					cout << "You ran out of charms! Disarming charms." << endl;
+        			        }
+
+        			        if ((hunter.inventory.charmArmed.charmName == "Ultimate") && (hunter.inventory.charmArmed.amount < 0)){
+        			        	hunter.inventory.ultimate.amount = 0;
+        			        	hunter.inventory.charmArmed.amount = 0;
+        			        }
+
+        			        if ((hunter.inventory.charmArmed.charmName == "Dragon") && (hunter.inventory.cheeseArmed.amount < 0)){
+        			        	hunter.inventory.dragon.amount = 0;
+        			        	hunter.inventory.charmArmed.amount = 0;
+        			        }
+
+        					hunter.inventory.charmArmed = hunter.inventory.noCharm;
         				}
         		}
         		cout << "You have made an overall profit of: " << hunter.goldProfit << " gold this last round of hunting." << endl;

@@ -949,6 +949,7 @@ Player Craft(Player hunter){
 	int rubiesSpentPer = 0;
 	int scalesSpentPer = 0;
 	int meltedCheesePer = 0;
+	int goldCostPer = 0;
 	int crafted = 0;
 	int totalScaleCost = 0;
 	int totalRubyCost = 0;
@@ -957,6 +958,7 @@ Player Craft(Player hunter){
 	int meltedCheeseTotal = 0;
 	int emberCostPer = 0;
 	int totalEmberCost = 0;
+	int totalGoldCost = 0;
 	char correct = 'n';
 	char again = 'y';
 
@@ -969,7 +971,8 @@ Player Craft(Player hunter){
 	cout << "What would you like to craft?" << endl;
 	cout << "Melt = Craft melted cheese, one ember per piece." << endl;
 	cout << "FF = Craft Fiery Fondue. Spend 1 ember, 10 melted cheese for pack of ten pieces." << endl;
-	cout << "THH = Craft Treasure Hoard Havarti. Spend 10 embers, 3 Sapphires, 3 Rubies, 3 Emeralds, 30 Melted cheese produces three." << endl;
+	cout << "THH3 = Craft 3 Treasure Hoard Havarti. Spend 10 embers, 3 Sapphires, 3 Rubies, 3 Emeralds, 30 Melted cheese." << endl;
+	cout << "THH4 = Craft 4 Treasure Hoard Havarti. Spend 10 embers, 3 Sapphires, 3 Rubies, 3 Emeralds, 30 Melted cheese and 40,000 gold." << endl;
 	cout << "Charm = Craft Dragon Charm. Spend 10 embers, 10 scales each." << endl;
 	cout << "Trap = Craft Best trap. Spend 1000 embers, 50 scales, both Power and Luck traps. Max of one." << endl;
 	cout << "Base = Craft Basalt base. Spend 500 embers, 50 scales. Max of one." << endl;
@@ -992,12 +995,20 @@ Player Craft(Player hunter){
 				meltedCheesePer = 10;
 				emberCostPer = 1;
 			}
-			else if (input == "THH"){
+			else if (input == "THH3"){
 				meltedCheesePer = 30;
 				rubiesSpentPer = 3;
 				sapphiresSpentPer = 3;
 				emeraldsSpentPer = 3;
 				emberCostPer = 10;
+			}
+			else if (input == "THH4"){
+				meltedCheesePer = 30;
+				rubiesSpentPer = 3;
+				sapphiresSpentPer = 3;
+				emeraldsSpentPer = 3;
+				emberCostPer = 10;
+				goldCostPer = 40000;
 			}
 			else if(input == "Charm"){
 				emberCostPer = 10;
@@ -1047,12 +1058,17 @@ Player Craft(Player hunter){
 			totalSapphireCost = crafted * sapphiresSpentPer;
 			totalEmeraldCost = crafted * emeraldsSpentPer;
 			meltedCheeseTotal = crafted * meltedCheesePer;
+			totalGoldCost = crafted * goldCostPer;
 
 
 			cout << "You are going to craft " << crafted << " " << input << "." << endl;
 			cout << "This will require " << totalEmberCost << " embers, " << meltedCheeseTotal << " melted cheese, and "
 					<< totalRubyCost << "/" << totalSapphireCost << "/" << totalEmeraldCost << "/" << totalScaleCost
 					<< " rubies/sapphires/emeralds/scales." << endl;
+
+			if (totalGoldCost != 0){
+				cout << "You will also spend " << totalGoldCost << " gold on SB+." << endl;
+			}
 			cout << "Is this correct? Enter 'n' to choose again." << endl;
 			cin >> correct;
 
@@ -1070,8 +1086,12 @@ Player Craft(Player hunter){
 						hunter.inventory.fieryFondue.amount += (crafted * 10);
 					}
 
-					if (input == "THH"){
+					if (input == "THH3"){
 						hunter.inventory.treasureHavarti.amount += (crafted * 3);
+					}
+
+					if (input == "THH4"){
+						hunter.inventory.treasureHavarti.amount += (crafted * 4);
 					}
 
 					if (input == "Trap" && crafted == 1 && hunter.inventory.powerTrap.inInventory == true

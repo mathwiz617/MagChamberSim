@@ -12,24 +12,26 @@ Inventory::Inventory() {
 
 	//define weapons
 	//("Name", power, power bonus, luck, attraction bonus, owned)
-	iceMaiden = Weapon::Weapon("Ice Maiden", 5200, 12, 8, 0.0, true);
-	powerTrap = Weapon::Weapon("Power", 20000, 50, 50, 0.0, false);
-	luckTrap = Weapon::Weapon("Luck", 15000, 30, 90, 0.0, false);
-	bestTrap = Weapon::Weapon("Best", 40000, 60, 90, 0.0, false);
+	iceMaiden = Weapon::Weapon("Ice Maiden", 5200, 12, 8, 0.0, true, false);
+	powerTrap = Weapon::Weapon("Power", 20000, 50, 50, 0.0, false, false);
+	luckTrap = Weapon::Weapon("Luck", 15000, 30, 90, 0.0, false, false);
+	bestTrap = Weapon::Weapon("Best", 40000, 60, 90, 0.0, true, false);
 	invalidWeapon = Weapon::Weapon();
 	weaponArmed = Weapon::Weapon();
 
 	//define bases
 	//("Name", power, power bonus, luck, attraction bonus, owned)
-	rift = Base::Base("Rift Base", 250, 12, 11, 0.0, true);
+	rift = Base::Base("Rift Base", 250, 12, 11, 0.0, true, false);
+	mino = Base::Base("Minotaur Base", 1000, 20, 15, 10.0, true, false);
+	basalt = Base::Base("Basalt Base", 3000, 40, 30, 0.0, true, false);
 	invalidBase = Base::Base();
 	baseArmed = Base::Base();
 
 	//define charms
 	//("Name", power, power bonus, luck, number owned, attraction bonus)
-	otherCharm = Charm::Charm("NYI", 0, 0, 0, 0, 0.0);
-	ultimate = Charm::Charm("Ultimate", 0, 0, 0, 0, 0.0);
-	dragon = Charm::Charm("Dragon", 10000, 40, 30, 0, 0.0);
+	otherCharm = Charm::Charm("NYI", 0, 0, 0, 0, 0.0, false);
+	ultimate = Charm::Charm("Ultimate", 0, 0, 0, 0, 0.0, false);
+	dragon = Charm::Charm("Dragon", 10000, 40, 30, 0, 0.0, true);
 	noCharm = Charm::Charm();
 	charmArmed = noCharm;
 

@@ -18,9 +18,10 @@ public:
 	int charmLuck; //luck
 	int amount;
 	double charmAttractionBonus; //added to cheese attraction rate
+	bool inSet; //Is it part of the Dragonslayer set?
 
 	Charm();
-	Charm(string, int, int, int, int, double);
+	Charm(string, int, int, int, int, double, bool);
 	virtual ~Charm();
 };
 

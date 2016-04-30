@@ -14,15 +14,17 @@ Charm::Charm() {
 	charmLuck = 0;
 	amount = 0;
 	charmAttractionBonus = 0;
+	inSet = false;
 }
 
-Charm::Charm(string type, int pow, int powBonus, int lck, int owned, double atrBonus) {
+Charm::Charm(string type, int pow, int powBonus, int lck, int owned, double atrBonus, bool set) {
 	charmName = type;
 	charmPower = pow;
 	charmPowerBonus = powBonus;
 	charmLuck = lck;
 	amount = owned;
 	charmAttractionBonus = atrBonus;
+	inSet = set;
 }
 
 Charm::~Charm() {

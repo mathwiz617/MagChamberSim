@@ -18,10 +18,10 @@ public:
 	int bLuck; //luck
 	double bAttractionBonus; //added to cheese attraction rate
 	bool inInventory; //do you have it?
-
+	bool inSet; //Is it part of the Dragonslayer set?
 
 	Base();
-	Base(string, int, int, int, double, bool);
+	Base(string, int, int, int, double, bool, bool);
 	virtual ~Base();
 };
 

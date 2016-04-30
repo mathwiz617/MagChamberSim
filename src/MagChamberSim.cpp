@@ -100,7 +100,7 @@ int main() {
         }
 
         if (input == "Base"){
-            cout << "What do you want to change to? (NYFI, enter Rift.)" << endl;
+            cout << "What do you want to change to? (NYFI, enter Rift, Mino, or Basalt.)" << endl;
             cin >> baseName;
             hunter.inventory.baseArmed = ChooseBase(baseName, hunter);
             hunter = SetTrap(hunter);
@@ -115,7 +115,7 @@ int main() {
 
         if (input == "Cheese"){
             cout << "What do you want to change to?" <<endl;
-            cout <<	"(Only Gouda is available for regular cheeses. Gouda, FF, MH, or THH.)" << endl;
+            cout <<	"(Only Gouda is available for regular cheeses. Enter Gouda, FF, MH, or THH.)" << endl;
             cin >> cheeseName;
             hunter.inventory.cheeseArmed = ChooseCheese(cheeseName, hunter);
             hunter = SetTrap(hunter);
@@ -266,7 +266,7 @@ Weapon ChooseWeapon(string weaponName, Player hunter){
     		cout << "You don't own that trap" << endl;
     	}
     }
-    else if(weaponName == "Power"){
+    else if((weaponName == "Power") && (hunter.points > 1000000)){
     	if (hunter.inventory.powerTrap.inInventory == true){
     		weapon = hunter.inventory.powerTrap;
     		cout << "Power trap armed." << endl;
@@ -275,7 +275,7 @@ Weapon ChooseWeapon(string weaponName, Player hunter){
     		cout << "You don't own that trap" << endl;
     	}
     }
-    else if(weaponName == "Luck"){
+    else if((weaponName == "Luck") && (hunter.points > 1000000)){
     	if (hunter.inventory.luckTrap.inInventory == true){
     		weapon = hunter.inventory.luckTrap;
     		cout << "Luck trap armed." << endl;
@@ -305,8 +305,16 @@ Base ChooseBase(string baseName, Player hunter){
     Base base;
 
     if(baseName == "Rift"){
-        base = hunter.inventory.rift;
-        cout << "Rift Base armed." << endl;
+    	base = hunter.inventory.rift;
+    	cout << "Rift Base armed." << endl;
+    }
+    else if(baseName == "Mino"){
+    	base = hunter.inventory.mino;
+    	cout << "Minotaur Base armed." << endl;
+    }
+    else if(baseName == "Basalt"){
+    	base = hunter.inventory.basalt;
+    	cout << "Basalt Base armed." << endl;
     }
     else{
         base = hunter.inventory.invalidBase;
@@ -945,7 +953,8 @@ Player Craft(Player hunter){
 	cout << "FF = Craft Fiery Fondue. Spend 1 ember, 10 melted cheese for pack of ten pieces." << endl;
 	cout << "THH = Craft Treasure Hoard Havarti. Spend 10 embers, 3 Sapphires, 3 Rubies, 3 Emeralds, 30 Melted cheese produces three." << endl;
 	cout << "Charm = Craft Dragon Charm. Spend 10 embers, 10 scales each." << endl;
-	cout << "Trap = Best trap. Spend 1000 embers, 50 scales, both Power and Luck traps. Max of one." << endl;
+	cout << "Trap = Craft Best trap. Spend 1000 embers, 50 scales, both Power and Luck traps. Max of one." << endl;
+	cout << "Base = Craft Basalt base. Spend 500 embers, 50 scales. Max of one." << endl;
 	cout << "None = stop crafting." << endl;
 
 		do{
@@ -990,6 +999,22 @@ Player Craft(Player hunter){
 					crafted = 1;
 					scalesSpentPer = 50;
 					emberCostPer = 1000;
+				}
+			}
+			else if(input == "Base"){
+				if (hunter.inventory.basalt.inInventory){
+					cout << "You can't craft any more of those!" << endl;
+					crafted = 0;
+				}
+				else if (crafted == 1){
+					emberCostPer = 500;
+					scalesSpentPer = 50;
+				}
+				else{
+					cout << "You can only craft one of those!" << endl;
+					crafted = 1;
+					scalesSpentPer = 50;
+					emberCostPer = 500;
 				}
 			}
 			else{
@@ -1039,6 +1064,11 @@ Player Craft(Player hunter){
 						hunter.inventory.bestTrap.inInventory = true;
 					}
 
+					if (input == "Base"){
+						cout << "You made the Basalt Base!" << endl;
+						hunter.inventory.basalt.inInventory = true;
+					}
+
 					hunter.embers -= totalEmberCost;
 					hunter.emeralds -= totalEmeraldCost;
 					hunter.rubies -= totalRubyCost;
@@ -1063,6 +1093,9 @@ Player SetTrap(Player hunter){
 
 	Cheese cheese;
 	Charm charm;
+	int setPieces = 0;
+	int setPowerBonus = 0;
+	int setLuckBonus = 0;
 
 	if (hunter.inventory.cheeseArmed.cheeseName == "Gouda"){
 		cheese = hunter.inventory.gouda;
@@ -1096,20 +1129,41 @@ Player SetTrap(Player hunter){
 
 	hunter.inventory.charmArmed = charm;
 
+	if(hunter.inventory.weaponArmed.inSet == true){
+		setPieces++;
+	}
+
+	if(hunter.inventory.baseArmed.inSet == true){
+		setPieces++;
+	}
+
+	if(hunter.inventory.charmArmed.inSet == true){
+		setPieces++;
+	}
+
+	if(setPieces > 1){
+		setPowerBonus = 10000;
+	}
+
+	if(setPieces == 3){
+		setLuckBonus = 30;
+	}
+
 	hunter.inventory.powerBonus = (hunter.inventory.weaponArmed.wPowerBonus + hunter.inventory.baseArmed.bPowerBonus
 			+ hunter.inventory.charmArmed.charmPowerBonus) / 100.0;
 
-	hunter.inventory.trapPower = hunter.inventory.weaponArmed.wPower + hunter.inventory.baseArmed.bPower + hunter.inventory.charmArmed.charmPower;
+	hunter.inventory.trapPower = hunter.inventory.weaponArmed.wPower + hunter.inventory.baseArmed.bPower
+			+ hunter.inventory.charmArmed.charmPower + setPowerBonus;
 
 	hunter.inventory.trapPowerTotal = hunter.inventory.trapPower + (hunter.inventory.trapPower * hunter.inventory.powerBonus);
 
 	if(hunter.inventory.shield == true){
 		hunter.inventory.trapLuck = hunter.inventory.weaponArmed.wLuck + hunter.inventory.baseArmed.bLuck
-				+ hunter.inventory.charmArmed.charmLuck + 7;
+				+ hunter.inventory.charmArmed.charmLuck + 7 + setLuckBonus;
 	}
 	else{
 		hunter.inventory.trapLuck = hunter.inventory.weaponArmed.wLuck + hunter.inventory.baseArmed.bLuck
-				+ hunter.inventory.charmArmed.charmLuck;
+				+ hunter.inventory.charmArmed.charmLuck + setLuckBonus;
 	}
 
 	hunter.inventory.attractionRateBonus = (1 - hunter.inventory.cheeseArmed.cheeseAttractionRate) * (hunter.inventory.weaponArmed.wAttractionBonus
@@ -1143,6 +1197,14 @@ void SeeInventory(Player hunter){
 
 	if(hunter.inventory.rift.inInventory == true){
 		cout << "You own the Rift base." << endl;
+	}
+
+	if(hunter.inventory.mino.inInventory == true){
+		cout << "You own the Minotaur Base."<< endl;
+	}
+
+	if(hunter.inventory.basalt.inInventory == true){
+		cout << "You own the Basalt Base."<< endl;
 	}
 
 	cout << "You own " << hunter.inventory.ultimate.amount << " Ultimate Charms." << endl;

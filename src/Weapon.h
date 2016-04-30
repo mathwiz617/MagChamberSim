@@ -18,9 +18,10 @@ public:
 	int wLuck; //luck
 	double wAttractionBonus; //added to cheese attraction rate
 	bool inInventory; //do you have it?
+	bool inSet; //Is it part of the Dragonslayer set?
 
 	Weapon();
-	Weapon(string, int, int, int, double, bool);
+	Weapon(string, int, int, int, double, bool, bool);
 	virtual ~Weapon();
 };
 

@@ -14,16 +14,17 @@ Weapon::Weapon() {
 	wLuck = 0;
 	wAttractionBonus = 0;
 	inInventory = false;
+	inSet = false;
 }
 
-Weapon::Weapon(string type, int pow, int powBonus, int lck, double atrBonus, bool have) {
+Weapon::Weapon(string type, int pow, int powBonus, int lck, double atrBonus, bool have, bool set) {
 	wName = type;
 	wPower = pow;
 	wPowerBonus = powBonus;
 	wLuck = lck;
 	wAttractionBonus = atrBonus;
 	inInventory = have;
-
+	inSet = set;
 }
 
 Weapon::~Weapon() {

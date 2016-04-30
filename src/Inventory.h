@@ -25,6 +25,8 @@ public:
 
 	//declare bases
 	Base rift;
+	Base mino;
+	Base basalt;
 	Base invalidBase;
 	Base baseArmed;
 
